@@ -1,7 +1,7 @@
 # Nachocode SDK 통합 가이드
 
 - Nachocode SDK를 웹 애플리케이션에서 활용하는 과정을 안내합니다. 이 가이드를 통해 Nachocode SDK의 기능을 웹 사이트에 손쉽게 추가할 수 있습니다.
-- 최신화 일자 : 2024-03-18
+- 최신화 일자 : 2024-03-22
 
 ## SDK 설정 방법
 
@@ -299,6 +299,19 @@ function onLoginSuccess(userID) {
   // ex. userID : "Nacho123"
   // "Nacho123" 사용자 식별자로 Nachocode 서버에 등록합니다.
   Nachocode.push.registerPushToken(userID);
+}
+```
+
+#### `updatePushToken(userID: string): Promise<any>`
+
+푸시 토큰의 Nachocode 서버에 지정한 사용자 식별자를 갱신합니다.
+
+```javascript
+// ex. 유저 변경 시 호출되는 콜백함수
+function onUserChanged(userID) {
+  // ex. userID : "Nacho123"
+  // "Nacho123" 사용자 식별자로 Nachocode 서버에서 갱신합니다.
+  Nachocode.push.updatePushToken(userID);
 }
 ```
 
