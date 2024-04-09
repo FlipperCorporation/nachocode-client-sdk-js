@@ -186,6 +186,22 @@ declare global {
     }
 
     /**
+     * Namespace for registered functions called to handle specified events.
+     */
+    namespace event {
+      /**
+       * Registers an event listener for the specified event name.
+       */
+      function on(eventName: string, callback: function): void;
+      /**
+       * Registered events
+       */
+      const callbacks: {
+        [eventName: string]: (response: any) => void;
+      };
+    }
+
+    /**
      * Namespace for functions called from native-side of the application.
      */
     namespace native {

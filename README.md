@@ -1,7 +1,7 @@
 # Nachocode SDK 통합 가이드
 
 - Nachocode SDK를 웹 애플리케이션에서 활용하는 과정을 안내합니다. 이 가이드를 통해 Nachocode SDK의 기능을 웹 사이트에 손쉽게 추가할 수 있습니다.
-- 최신화 일자 : 2024-03-22
+- 최신화 일자 : 2024-04-09
 
 ## SDK 설정 방법
 
@@ -12,7 +12,7 @@
 - 웹 페이지의 `<head>` 태그 안이나, `<body>` 태그 안에 다음과 같은 스크립트 태그를 추가합니다. 이 스크립트는 Nachocode SDK를 웹 페이지에 로드합니다.
 
 ```html
-<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.0.1/client-sdk.min.js"></script>
+<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.0.2/client-sdk.min.js"></script>
 ```
 
 ### 2. SDK 초기화
@@ -57,7 +57,7 @@ console.log(appName);
 
 #### 최신 버젼
 
-- [nachocode client sdk ver.1.0.1](https://cdn.nachocode.io/nachocode/client-sdk/@1.0.1/client-sdk.min.js)
+- [nachocode client sdk ver.1.0.2](https://cdn.nachocode.io/nachocode/client-sdk/@1.0.2/client-sdk.min.js)
 
 ## 초기화
 
@@ -80,6 +80,13 @@ Nachocode SDK를 초기화합니다. 애플리케이션이 시작할 때 호출�
 // SDK가 로드되었는지 확인한 후 초기화를 시도합니다.
 if (window.Nachocode) {
   Nachocode.init("your_api_key_here", { sandbox: true, logger: true });
+
+  // SDK 초기화 후 동작할 이벤트를 등록 합니다.
+  Nachocode.event.on("init", () => {
+    if (Nachocode.env.isApp()) {
+      // 앱 환경에서만 동작 할 로직을 작성합니다.
+    }
+  });
 } else {
   console.error("Nachocode SDK is not loaded.");
 }
@@ -231,7 +238,7 @@ const runningEnv = Nachocode.env.getRunningEnv(); // 'web' | 'app'
 현재 SDK 버전을 반환합니다.
 
 ```javascript
-const sdkVersion = Nachocode.env.getSDKVersion(); // ex. '1.0.1'
+const sdkVersion = Nachocode.env.getSDKVersion(); // ex. '1.0.2'
 ```
 
 #### `isApp(): boolean`
@@ -283,6 +290,25 @@ if (Nachocode.env.isUsingSandbox()) {
 if (Nachocode.env.isWeb()) {
   // 웹 환경에서만 동작할 로직을 작성합니다.
 }
+```
+
+## 이벤트 (Namespace: `event`)
+
+### Methods (event)
+
+#### `on(eventName: string, callback: function): void`
+
+특정 이벤트명으로 콜백 함수를 바인드합니다.
+
+```javascript
+Nachocode.init("your_api_key_here");
+
+// SDK 초기화 후 동작할 이벤트를 등록 합니다.
+Nachocode.event.on("init", () => {
+  if (Nachocode.env.isApp() && Nachocode.device.isIOS()) {
+    // iOS 디바이스에서만 동작할 로직을 작성합니다.
+  }
+});
 ```
 
 ## 푸시 알림 (Namespace: `push`)
