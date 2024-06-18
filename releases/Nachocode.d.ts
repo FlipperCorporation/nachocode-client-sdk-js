@@ -1,6 +1,3 @@
-// Definitions by: Nacho@FlipperCorporation <https://github.com/FlipperNacho>
-//                 JohnAn@FlipperCorporation <https://github.com/johnhjh>
-
 declare global {
   namespace Nachocode {
     /**
@@ -63,9 +60,9 @@ declare global {
        * Enum for device types
        */
       export declare enum DeviceType {
-        ANDROID = 'Android',
-        IOS = 'iOS',
-        UNKNOWN = 'Unknown',
+        ANDROID = "Android",
+        IOS = "iOS",
+        UNKNOWN = "Unknown",
       }
 
       /**
@@ -98,8 +95,8 @@ declare global {
        * Enum for Nachocode applicaiton running environment
        */
       export declare enum RunningEnvironment {
-        WEB = 'web',
-        APP = 'app',
+        WEB = "web",
+        APP = "app",
       }
 
       /**
@@ -172,17 +169,6 @@ declare global {
        * Check whether the application is running on `Web Applicaiton`.
        */
       function isWeb(): boolean;
-
-      /**
-       * Sets the application environment.
-       */
-      function setEnv(options: EnvironmentOptions): void;
-
-      /**
-       * Enables or disables the use of the sandbox environment.
-       * @param usingSandbox Using sandbox server or not
-       */
-      function setSandbox(usingSandbox: boolean): void;
     }
 
     /**
@@ -242,16 +228,31 @@ declare global {
       function registerPushToken(userID: string): Promise<any>;
 
       /**
-       * Updates the push token with the user identifier.
-       * @param userID - Client user identifier
-       */
-      function updatePushToken(userID: string): Promise<any>;
-
-      /**
        * Deletes the push token with the user identifier.
        * @param userID - Client user identifier
        */
       function deletePushToken(userID: string): Promise<any>;
+    }
+
+    /**
+     * Namespace for tabbar functions
+     */
+    namespace tabbar {
+      /**
+       * Move to specific index of the tab.
+       * @param {number} index - specified index of the tab willing to move
+       */
+      function moveTo(index: number): void;
+
+      /**
+       * Shows the tabbar.
+       */
+      function show(): void;
+
+      /**
+       * Hides the tabbar.
+       */
+      function hide(): void;
     }
   }
 }

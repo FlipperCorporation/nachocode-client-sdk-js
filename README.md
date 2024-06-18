@@ -1,7 +1,7 @@
 # Nachocode SDK 통합 가이드
 
 - Nachocode SDK를 웹 애플리케이션에서 활용하는 과정을 안내합니다. 이 가이드를 통해 Nachocode SDK의 기능을 웹 사이트에 손쉽게 추가할 수 있습니다.
-- 최신화 일자 : 2024-04-09
+- 최신화 일자 : 2024-06-19
 
 ## SDK 설정 방법
 
@@ -12,7 +12,7 @@
 - 웹 페이지의 `<head>` 태그 안이나, `<body>` 태그 안에 다음과 같은 스크립트 태그를 추가합니다. 이 스크립트는 Nachocode SDK를 웹 페이지에 로드합니다.
 
 ```html
-<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.0.2/client-sdk.min.js"></script>
+<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.0.3/client-sdk.min.js"></script>
 ```
 
 ### 2. SDK 초기화
@@ -57,7 +57,7 @@ console.log(appName);
 
 #### 최신 버젼
 
-- [nachocode client sdk ver.1.0.2](https://cdn.nachocode.io/nachocode/client-sdk/@1.0.2/client-sdk.min.js)
+- [nachocode client sdk ver.1.0.3](https://cdn.nachocode.io/nachocode/client-sdk/@1.0.3/client-sdk.min.js)
 
 ## 초기화
 
@@ -238,7 +238,7 @@ const runningEnv = Nachocode.env.getRunningEnv(); // 'web' | 'app'
 현재 SDK 버전을 반환합니다.
 
 ```javascript
-const sdkVersion = Nachocode.env.getSDKVersion(); // ex. '1.0.2'
+const sdkVersion = Nachocode.env.getSDKVersion(); // ex. '1.0.3'
 ```
 
 #### `isApp(): boolean`
@@ -328,19 +328,6 @@ function onLoginSuccess(userID) {
 }
 ```
 
-#### `updatePushToken(userID: string): Promise<any>`
-
-푸시 토큰의 Nachocode 서버에 지정한 사용자 식별자를 갱신합니다.
-
-```javascript
-// ex. 유저 변경 시 호출되는 콜백함수
-function onUserChanged(userID) {
-  // ex. userID : "Nacho123"
-  // "Nacho123" 사용자 식별자로 Nachocode 서버에서 갱신합니다.
-  Nachocode.push.updatePushToken(userID);
-}
-```
-
 #### `deletePushToken(userID: string): Promise<any>`
 
 사용자 식별자로 푸시 토큰을 삭제합니다.
@@ -353,4 +340,37 @@ function onLogout(userID) {
   // Nachocode 서버에서 삭제합니다.
   Nachocode.push.deletePushToken(userID);
 }
+```
+
+## 탭바 (Namespace: `tabbar`)
+
+### Methods (tabbar)
+
+#### `moveTo(index: number): Promise<void>`
+
+특정 index의 탭으로 전환합니다. Nachocode 대시보드에서 탭바를 먼저 등록 후 빌드해야합니다.
+
+```javascript
+// 제일 첫번째 탭으로 탭을 전환합니다.
+Nachocode.tabbar.moveTo(0);
+// 두번째 탭으로 탭을 전환합니다.
+Nachocode.tabbar.moveTo(1);
+```
+
+#### `show(): Promise<void>`
+
+탭바를 화면에서 다시 보이게 합니다. Nachocode 대시보드에서 탭바를 먼저 등록 후 빌드해야합니다.
+
+```javascript
+// 숨겨진 탭바를 다시 보이게 합니다.
+Nachocode.tabbar.show();
+```
+
+#### `hide(): Promise<void>`
+
+탭바를 화면에서 숨깁니다. Nachocode 대시보드에서 탭바를 먼저 등록 후 빌드해야합니다.
+
+```javascript
+// 탭바를 화면에서 숨깁니다.
+Nachocode.tabbar.hide();
 ```
