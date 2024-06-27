@@ -1,7 +1,7 @@
 # Nachocode SDK 통합 가이드
 
 - Nachocode SDK를 웹 애플리케이션에서 활용하는 과정을 안내합니다. 이 가이드를 통해 Nachocode SDK의 기능을 웹 사이트에 손쉽게 추가할 수 있습니다.
-- 최신화 일자 : 2024-06-19
+- 최신화 일자 : 2024-06-27
 
 ## SDK 설정 방법
 
@@ -79,14 +79,15 @@ Nachocode SDK를 초기화합니다. 애플리케이션이 시작할 때 호출�
 ```javascript
 // SDK가 로드되었는지 확인한 후 초기화를 시도합니다.
 if (window.Nachocode) {
-  Nachocode.init("your_api_key_here", { sandbox: true, logger: true });
-
   // SDK 초기화 후 동작할 이벤트를 등록 합니다.
   Nachocode.event.on("init", () => {
     if (Nachocode.env.isApp()) {
       // 앱 환경에서만 동작 할 로직을 작성합니다.
     }
   });
+
+  // Nachocode SDK를 초기화 합니다.
+  Nachocode.init("your_api_key_here", { sandbox: true, logger: true });
 } else {
   console.error("Nachocode SDK is not loaded.");
 }
@@ -301,14 +302,15 @@ if (Nachocode.env.isWeb()) {
 특정 이벤트명으로 콜백 함수를 바인드합니다.
 
 ```javascript
-Nachocode.init("your_api_key_here");
-
 // SDK 초기화 후 동작할 이벤트를 등록 합니다.
 Nachocode.event.on("init", () => {
   if (Nachocode.env.isApp() && Nachocode.device.isIOS()) {
     // iOS 디바이스에서만 동작할 로직을 작성합니다.
   }
 });
+
+// Nachocode SDK를 초기화 합니다.
+Nachocode.init("your_api_key_here");
 ```
 
 ## 푸시 알림 (Namespace: `push`)

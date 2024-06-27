@@ -180,35 +180,14 @@ declare global {
        */
       function on(eventName: string, callback: function): void;
       /**
+       * Unbinds registered event listener for the specified event name.
+       */
+      function off(eventName: string): void;
+      /**
        * Registered events
        */
       const callbacks: {
         [eventName: string]: (response: any) => void;
-      };
-    }
-
-    /**
-     * Namespace for functions called from native-side of the application.
-     */
-    namespace native {
-      export declare type CallbackResponse = {
-        method: string;
-        data?: object;
-        message?: string;
-      };
-
-      /**
-       * A placeholder callback function that can be called from the native application.
-       * This function should be implemented to handle specific callback from native code.
-       */
-      function handleCallback(response: CallbackResponse): void;
-
-      /**
-       * A collection of named callback functions that can be invoked from native code.
-       * Each property of this object can be a function that gets executed in response to a native call.
-       */
-      const handleCallbacks: {
-        [callbackName: string]: (response: any) => void;
       };
     }
 
