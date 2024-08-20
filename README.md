@@ -1,7 +1,7 @@
 # Nachocode SDK 통합 가이드
 
 - Nachocode SDK를 웹 애플리케이션에서 활용하는 과정을 안내합니다. 이 가이드를 통해 Nachocode SDK의 기능을 웹 사이트에 손쉽게 추가할 수 있습니다.
-- 최신화 일자 : 2024-06-27
+- 최신화 일자 : 2024-08-20
 
 ## SDK 설정 방법
 
@@ -9,10 +9,10 @@
 
 ### 1. SDK 스크립트 추가
 
-- 웹 페이지의 `<head>` 태그 안이나, `<body>` 태그 안에 다음과 같은 스크립트 태그를 추가합니다. 이 스크립트는 Nachocode SDK를 웹 페이지에 로드합니다.
+- 웹 페이지의 `<body>` 태그 안에 다음과 같은 스크립트 태그를 추가합니다. 이 스크립트는 Nachocode SDK를 웹 페이지에 로드합니다.
 
 ```html
-<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.0.3/client-sdk.min.js"></script>
+<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.1.0/client-sdk.min.js"></script>
 ```
 
 ### 2. SDK 초기화
@@ -23,7 +23,7 @@
 <script>
   // SDK가 로드되었는지 확인한 후 초기화를 시도합니다.
   if (window.Nachocode) {
-    Nachocode.init("your_api_key_here", { sandbox: true, logger: true });
+    Nachocode.init("your_api_key_here", { logger: true });
   } else {
     console.error("Nachocode SDK is not loaded.");
   }
@@ -31,7 +31,6 @@
 ```
 
 - `your_api_key_here`: 여러분의 Nachocode 서비스 API 키로 교체해주세요.
-- `sandbox`: 샌드박스 환경을 사용할지 여부를 결정합니다. 개발 단계에서는 `true`로 설정하는 것이 좋습니다.
 - `logger`: SDK의 로깅 기능을 활성화할지 결정합니다. 개발 중에 문제를 진단하는 데 유용할 수 있으므로 `true`로 설정하는 것이 좋습니다.
 
 ### 3. SDK 기능 사용
@@ -45,7 +44,7 @@ console.log(appName);
 
 ## 추가 정보
 
-- Nachocode SDK를 사용하여 더 많은 기능을 구현하고 싶다면, [공식 문서](https://nachocode.io/docs)를 참조하거나, [GitHub 리포지토리](https://github.com/FlipperCorporation)에서 더 많은 예제와 가이드를 찾아볼 수 있습니다.
+- Nachocode SDK를 사용하여 더 많은 기능을 구현하고 싶다면, [공식 개발자 문서](https://nachocode.notion.site/bfb96ce8d7014e84a87d3356ad17f99e)를 참조하거나, [GitHub 리포지토리](https://github.com/FlipperCorporation)에서 더 많은 예제와 가이드를 찾아볼 수 있습니다.
 
 - Nachocode 팀은 여러분의 성공적인 프로젝트 구현을 위해 항상 도움을 준비하고 있습니다. 기술적인 질문이나 피드백이 있다면 언제든지 [이메일](mailto:support@nachocode.io)을 보내주세요.
 
@@ -57,7 +56,17 @@ console.log(appName);
 
 #### 최신 버젼
 
-- [nachocode client sdk ver.1.0.3](https://cdn.nachocode.io/nachocode/client-sdk/@1.0.3/client-sdk.min.js)
+- 항상 가장 최신 버젼 불러오기
+
+```html
+<script src="https://cdn.nachocode.io/nachocode/client-sdk/@latest/client-sdk.min.js"></script>
+```
+
+- 현재 최신 버젼 v1.1.0
+
+```html
+<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.1.0/client-sdk.min.js"></script>
+```
 
 ## 초기화
 
@@ -133,6 +142,36 @@ const appVersion = Nachocode.app.getCurrentAppVersion(); // ex. '0.0.2'
 
 ```javascript
 const appPackageName = Nachocode.app.getPackageName(); // ex. 'com.nachocode.xxx'
+```
+
+## 브라우저 (Namespace: `browser`)
+
+### OpenURLOption
+
+브라우저 옵션을 나타내는 타입입니다.
+
+- `external`: 외부 브라우저 의미합니다. (safari, chrome, naver 등)
+- `internal`: 앱 내부 브라우저를 의미합니다.
+
+### Methods (Browser)
+
+#### `openLink(url: string, option?: OpenURLOption): void`
+
+제공된 URL을 브라우저 창에서 오픈 합니다.
+
+```javascript
+// 기본 옵션 : 'external'
+Nachocode.browser.openLink("https://nachocode.io");
+```
+
+```javascript
+// 외부 브라우저로 URL 오픈
+Nachocode.browser.openLink("https://nachocode.io", "external");
+```
+
+```javascript
+// 내부 브라우저로 URL 오픈
+Nachocode.browser.openLink("https://nachocode.io", "internal");
 ```
 
 ## 디바이스 (Namespace: `device`)
@@ -239,7 +278,7 @@ const runningEnv = Nachocode.env.getRunningEnv(); // 'web' | 'app'
 현재 SDK 버전을 반환합니다.
 
 ```javascript
-const sdkVersion = Nachocode.env.getSDKVersion(); // ex. '1.0.3'
+const sdkVersion = Nachocode.env.getSDKVersion(); // ex. '1.1.0'
 ```
 
 #### `isApp(): boolean`
@@ -313,6 +352,15 @@ Nachocode.event.on("init", () => {
 Nachocode.init("your_api_key_here");
 ```
 
+#### `off(eventName: string): void`
+
+특정 이벤트명으로 바인드 된 콜백 함수를 제거합니다.
+
+```javascript
+// 'init' 이벤트명으로 바인드 된 event를 제거합니다.
+Nachocode.event.off("init");
+```
+
 ## 푸시 알림 (Namespace: `push`)
 
 ### Methods (push)
@@ -342,6 +390,21 @@ function onLogout(userID) {
   // Nachocode 서버에서 삭제합니다.
   Nachocode.push.deletePushToken(userID);
 }
+```
+
+## 공유 (Namespace: `share`)
+
+### Methods (share)
+
+#### `openSharing(url: string): void`
+
+제공된 URL로 앱 Native 공유하기 UI를 엽니다.
+
+```javascript
+// 공유 할 URL. ex) 'https://nachocode.io'
+const sharedURL = "https://nachocode.io";
+// 해당 URL을 Native UI로 공유합니다.
+Nachocode.share.openSharing(sharedURL);
 ```
 
 ## 탭바 (Namespace: `tabbar`)
@@ -375,4 +438,151 @@ Nachocode.tabbar.show();
 ```javascript
 // 탭바를 화면에서 숨깁니다.
 Nachocode.tabbar.hide();
+```
+
+## 진동 (Namespace: `vibration`)
+
+### HapticsType
+
+햅틱 피드백 유형을 나타내는 열거형입니다.
+
+- `SUCCESS = 0`: 성공 시의 햅틱 피드백을 나타냅니다.
+- `ERROR = 1`: 실패 시의 햅틱 피드백을 나타냅니다.
+
+### Methods (vibration)
+
+#### `setHaptics(enable: boolean): void`
+
+앱 사용자의 햅틱 피드백 사용유무를 저장합니다.
+스토어 정책 상 진동 기능을 사용 할 경우 앱 사용자에게 끌 수 있도록 옵션을 제공해야 합니다.
+
+```javascript
+// 앱이 햅틱 피드백을 사용하도록 설정합니다.
+Nachocode.vibration.setHaptics(true);
+```
+
+```javascript
+// 사용자의 선택에 따라 햅틱 피드백 사용을 중지합니다.
+Nachocode.vibration.setHaptics(false);
+```
+
+```javascript
+// ex. 햅틱 피드백 토글 UI 변경 시 호출 될 함수
+function onHapticsToggleChange(enable) {
+  Nachocode.vibration.setHaptics(enable);
+}
+```
+
+#### `setVibration(enable: boolean): void`
+
+앱 사용자의 진동 사용유무를 저장합니다.
+스토어 정책 상 진동 기능을 사용 할 경우 앱 사용자에게 끌 수 있도록 옵션을 제공해야 합니다.
+
+```javascript
+// 앱이 진동을 사용하도록 설정합니다.
+Nachocode.vibration.setVibration(true);
+```
+
+```javascript
+// 사용자의 선택에 따라 진동 사용을 중지합니다.
+Nachocode.vibration.setVibration(false);
+```
+
+```javascript
+// ex. 진동 토글 UI 변경 시 호출 될 함수
+function onVibrationToggleChange(enable) {
+  Nachocode.vibration.setVibration(enable);
+}
+```
+
+#### `getHaptics(callback?: (enable: boolean) => void): void`
+
+앱에서 앱 사용자의 햅틱 피드백 사용유무를 받아옵니다. 콜백함수에 사용 유무를 전달하여 호출합니다.
+
+```javascript
+// ex. Native에서 햅틱 피드백 사용유무를 받아와 input의 checked 값을 변경합니다.
+Nachocode.vibration.getHaptics(enable => {
+  document.querySelector(
+    `input[name="useHaptics"][value="${enable}"]`
+  ).checked = true;
+});
+```
+
+#### `getVibration(callback?: (enable: boolean) => void): void`
+
+앱에서 앱 사용자의 진동 사용유무를 받아옵니다. 콜백함수에 사용 유무를 전달하여 호출합니다.
+
+```javascript
+// ex. Native에서 진동 사용유무를 받아와 input의 checked 값을 변경합니다.
+Nachocode.vibration.getVibration(enable => {
+  document.querySelector(
+    `input[name="useVibration"][value="${enable}"]`
+  ).checked = true;
+});
+```
+
+#### `isUsingHaptics(): boolean`
+
+로컬 스토리지에서 사용자의 햅틱 피드백 사용유무를 받아옵니다.
+
+```javascript
+// 저장 된 사용자 햅틱 피드백 사용유무 확인
+const usesHaptics = Nachocode.vibration.isUsingHaptics(); // true | false
+```
+
+#### `isUsingVibration(): boolean`
+
+로컬 스토리지에서 사용자의 진동 사용유무를 받아옵니다.
+
+```javascript
+// 저장 된 사용자 진동 사용유무 확인
+const usesVibration = Nachocode.vibration.isUsingVibration(); // true | false
+```
+
+#### `haptics(hapticsType?: HapticsType): void`
+
+햅틱 피드백을 트리거합니다.
+`SUCCESS = 0 | ERROR = 1`을 옵션으로 선택할 수 있습니다.
+기본적으로 `SUCCESS = 0` 을 옵션으로 가집니다.
+
+```javascript
+// DOM 요소의 touchstart 이벤트에 햅틱 피드백 트리거를 바인드 합니다.
+document
+  .getElementById("hapticsButton")
+  .addEventListener("touchstart", function () {
+    // 기본적으로 HapticsType.SUCCESS(=0)를 옵션으로 가집니다.
+    Nachocode.vibration.haptics();
+  });
+```
+
+```javascript
+// DOM 요소의 touchstart 이벤트에 햅틱 피드백 트리거를 바인드 합니다.
+document
+  .getElementById("hapticsButton")
+  .addEventListener("touchstart", function () {
+    // 0은 HapticsType.SUCCESS를 의미합니다.
+    Nachocode.vibration.haptics(0);
+  });
+```
+
+```javascript
+// DOM 요소의 touchstart 이벤트에 햅틱 피드백 트리거를 바인드 합니다.
+document
+  .getElementById("hapticsButton")
+  .addEventListener("touchstart", function () {
+    // 1은 HapticsType.ERROR를 의미합니다.
+    Nachocode.vibration.haptics(1);
+  });
+```
+
+#### `vibrate(): void`
+
+짧은 패턴의 진동을 트리거합니다.
+
+```javascript
+// DOM 요소의 click 이벤트에 진동 트리거를 바인드 합니다.
+document.getElementById("vibrateButton").addEventListener("click", function () {
+  // 진동 호출
+  Nachocode.vibration.vibrate();
+});
 ```
