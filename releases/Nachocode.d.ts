@@ -53,6 +53,34 @@ declare global {
     }
 
     /**
+     * Namespace for browser-related functions
+     */
+    namespace browser {
+      /**
+       * Option for opening a URL.
+       *   - Default : 'external'
+       */
+      export declare type OpenURLOption = 'external' | 'internal';
+
+      /**
+       * Opens the provided URL with the specified options.
+       * @param url - The URL to be opened.
+       * @param option - The option for opening the URL.
+       *   - Default : `'external'`
+       * @example
+       * // Deafult option : 'external'
+       * Nachocode.browser.openLink('https://nachocode.io');
+       * @example
+       * // Open external browser
+       * Nachocode.browser.openLink('https://nachocode.io', 'external');
+       * @example
+       * // Open internal browser
+       * Nachocode.browser.openLink('https://nachocode.io', 'internal');
+       */
+      function openLink(url: string, option?: OpenURLOption): void;
+    }
+
+    /**
      * Namespace for device specific functions
      */
     namespace device {
@@ -60,9 +88,9 @@ declare global {
        * Enum for device types
        */
       export declare enum DeviceType {
-        ANDROID = "Android",
-        IOS = "iOS",
-        UNKNOWN = "Unknown",
+        ANDROID = 'Android',
+        IOS = 'iOS',
+        UNKNOWN = 'Unknown',
       }
 
       /**
@@ -95,8 +123,8 @@ declare global {
        * Enum for Nachocode applicaiton running environment
        */
       export declare enum RunningEnvironment {
-        WEB = "web",
-        APP = "app",
+        WEB = 'web',
+        APP = 'app',
       }
 
       /**
@@ -214,6 +242,16 @@ declare global {
     }
 
     /**
+     * Namespace for share functions
+     */
+    namespace share {
+      /**
+       * Opens the native sharing UI with the provided URL.
+       */
+      function openSharing(url: string): void;
+    }
+
+    /**
      * Namespace for tabbar functions
      */
     namespace tabbar {
@@ -232,6 +270,54 @@ declare global {
        * Hides the tabbar.
        */
       function hide(): void;
+    }
+
+    /**
+     * Namespace for vibration functions
+     */
+    namespace vibration {
+      /**
+       * Enum for haptics feedback type
+       */
+      export declare enum HapticsType {
+        SUCCESS = 0,
+        ERROR = 1,
+      }
+      /**
+       * Set whether haptics feedback is used or not.
+       */
+      function setHaptics(enable: boolean): void;
+      /**
+       * Set whether vibration is used or not.
+       */
+      function setVibration(enable: boolean): void;
+      /**
+       * Get whether haptics feedback is used or not from native.
+       */
+      function getHaptics(callback?: (enable: boolean) => void): void;
+      /**
+       * Get whether vibration is used or not from native.
+       */
+      function getVibration(callback?: (enable: boolean) => void): void;
+      /**
+       * Get whether haptics feedback is used or not from user local storage.
+       * - Default : `true`
+       */
+      function isUsingHaptics(): boolean;
+      /**
+       * Get whether vibration is used or not from user local storage.
+       * - Default : `true`
+       */
+      function isUsingVibration(): boolean;
+      /**
+       * Triggers haptics feedback.
+       * - Default : `0`
+       */
+      function haptics(hapticsType?: HapticsType): void;
+      /**
+       * Triggers vibration.
+       */
+      function vibrate(): void;
     }
   }
 }
