@@ -206,7 +206,7 @@ declare global {
       /**
        * Registers an event listener for the specified event name.
        */
-      function on(eventName: string, callback: function): void;
+      function on(eventName: string, callback: Function): void;
       /**
        * Unbinds registered event listener for the specified event name.
        */
@@ -294,11 +294,11 @@ declare global {
       /**
        * Get whether haptics feedback is used or not from native.
        */
-      function getHaptics(callback?: (enable: boolean) => void): void;
+      function getHaptics(callback: (enable: boolean) => void): void;
       /**
        * Get whether vibration is used or not from native.
        */
-      function getVibration(callback?: (enable: boolean) => void): void;
+      function getVibration(callback: (enable: boolean) => void): void;
       /**
        * Get whether haptics feedback is used or not from user local storage.
        * - Default : `true`

@@ -495,7 +495,7 @@ function onVibrationToggleChange(enable) {
 }
 ```
 
-#### `getHaptics(callback?: (enable: boolean) => void): void`
+#### `getHaptics(callback: (enable: boolean) => void): void`
 
 앱에서 앱 사용자의 햅틱 피드백 사용유무를 받아옵니다. 콜백함수에 사용 유무를 전달하여 호출합니다.
 
@@ -508,7 +508,7 @@ Nachocode.vibration.getHaptics(enable => {
 });
 ```
 
-#### `getVibration(callback?: (enable: boolean) => void): void`
+#### `getVibration(callback: (enable: boolean) => void): void`
 
 앱에서 앱 사용자의 진동 사용유무를 받아옵니다. 콜백함수에 사용 유무를 전달하여 호출합니다.
 
