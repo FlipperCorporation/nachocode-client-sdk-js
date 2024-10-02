@@ -1,18 +1,18 @@
 # Nachocode SDK 통합 가이드
 
-- Nachocode SDK를 웹 애플리케이션에서 활용하는 과정을 안내합니다. 이 가이드를 통해 Nachocode SDK의 기능을 웹 사이트에 손쉽게 추가할 수 있습니다.
-- 최신화 일자 : 2024-08-20
+- **Nachocode SDK**를 웹 애플리케이션에서 활용하는 과정을 안내합니다. 이 가이드를 통해 **Nachocode SDK**의 기능을 웹 사이트에 손쉽게 추가할 수 있습니다.
+- 최신화 일자 : 2024-10-02
 
 ## SDK 설정 방법
 
-- Nachocode SDK를 웹 페이지에 통합하는 과정은 매우 간단합니다. 아래 단계를 따라 진행하세요.
+- **Nachocode SDK**를 웹 페이지에 통합하는 과정은 매우 간단합니다. 아래 단계를 따라 진행하세요.
 
 ### 1. SDK 스크립트 추가
 
-- 웹 페이지의 `<body>` 태그 안에 다음과 같은 스크립트 태그를 추가합니다. 이 스크립트는 Nachocode SDK를 웹 페이지에 로드합니다.
+- 웹 페이지의 `<body>` 태그 안에 다음과 같은 스크립트 태그를 추가합니다. 이 스크립트는 **Nachocode SDK**를 웹 페이지에 로드합니다.
 
 ```html
-<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.1.0/client-sdk.min.js"></script>
+<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.2.0/client-sdk.min.js"></script>
 ```
 
 ### 2. SDK 초기화
@@ -23,9 +23,9 @@
 <script>
   // SDK가 로드되었는지 확인한 후 초기화를 시도합니다.
   if (window.Nachocode) {
-    Nachocode.init("your_api_key_here", { logger: true });
+    Nachocode.init('your_api_key_here', { logger: true });
   } else {
-    console.error("Nachocode SDK is not loaded.");
+    console.error('Nachocode SDK is not loaded.');
   }
 </script>
 ```
@@ -36,6 +36,7 @@
 ### 3. SDK 기능 사용
 
 - SDK가 초기화되면, `Nachocode` 네임스페이스 아래에 정의된 다양한 기능을 사용할 수 있습니다. 예를 들어, 애플리케이션 이름을 검색하려면 다음과 같이 할 수 있습니다.
+- 대부분의 기능은 웹 실행환경에선 무시되고, 앱 실행환경에서 정상 작동합니다.
 
 ```javascript
 const appName = Nachocode.app.getAppName();
@@ -44,7 +45,7 @@ console.log(appName);
 
 ## 추가 정보
 
-- Nachocode SDK를 사용하여 더 많은 기능을 구현하고 싶다면, [공식 개발자 문서](https://nachocode.notion.site/bfb96ce8d7014e84a87d3356ad17f99e)를 참조하거나, [GitHub 리포지토리](https://github.com/FlipperCorporation)에서 더 많은 예제와 가이드를 찾아볼 수 있습니다.
+- **Nachocode SDK**를 사용하여 더 많은 기능을 구현하고 싶다면, [공식 개발자 문서](https://nachocode.notion.site/bfb96ce8d7014e84a87d3356ad17f99e)를 참조하거나, [GitHub 리포지토리](https://github.com/FlipperCorporation)에서 더 많은 예제와 가이드를 찾아볼 수 있습니다.
 
 - Nachocode 팀은 여러분의 성공적인 프로젝트 구현을 위해 항상 도움을 준비하고 있습니다. 기술적인 질문이나 피드백이 있다면 언제든지 [이메일](mailto:support@nachocode.io)을 보내주세요.
 
@@ -54,25 +55,25 @@ console.log(appName);
 
 - Nachocode JavaScript 클라이언트 라이브러리는 웹 및 네이티브 앱 개발에 필요한 다양한 기능을 제공합니다. 이 문서는 라이브러리의 주요 기능과 사용법을 소개합니다.
 
-#### 최신 버젼
+#### 최신 버전
 
-- 항상 가장 최신 버젼 불러오기
+- 항상 가장 최신 버전 불러오기
 
 ```html
 <script src="https://cdn.nachocode.io/nachocode/client-sdk/@latest/client-sdk.min.js"></script>
 ```
 
-- 현재 최신 버젼 v1.1.0
+- 현재 최신 버전 v1.2.0
 
 ```html
-<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.1.0/client-sdk.min.js"></script>
+<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.2.0/client-sdk.min.js"></script>
 ```
 
 ## 초기화
 
 ### `init(apiKey: string, options?: InitializeOptions): void`
 
-Nachocode SDK를 초기화합니다. 애플리케이션이 시작할 때 호출해야 합니다.
+**Nachocode SDK**를 초기화합니다. 애플리케이션이 시작할 때 호출해야 합니다.
 
 - **Parameters:**
   - `apiKey`: Nachocode 서비스 접근을 위한 API 키입니다.
@@ -89,23 +90,23 @@ Nachocode SDK를 초기화합니다. 애플리케이션이 시작할 때 호출�
 // SDK가 로드되었는지 확인한 후 초기화를 시도합니다.
 if (window.Nachocode) {
   // SDK 초기화 후 동작할 이벤트를 등록 합니다.
-  Nachocode.event.on("init", () => {
+  Nachocode.event.on('init', () => {
     if (Nachocode.env.isApp()) {
       // 앱 환경에서만 동작 할 로직을 작성합니다.
     }
   });
 
   // Nachocode SDK를 초기화 합니다.
-  Nachocode.init("your_api_key_here", { sandbox: true, logger: true });
+  Nachocode.init('your_api_key_here', { logger: true });
 } else {
-  console.error("Nachocode SDK is not loaded.");
+  console.error('Nachocode SDK is not loaded.');
 }
 ```
 
 ```javascript
 // InitializeOptions 없이도 초기화를 할 수 있습니다.
 // sandbox 와 logger는 false 값을 가지게 됩니다.
-Nachocode.init("your_api_key_here");
+Nachocode.init('your_api_key_here');
 ```
 
 ## 애플리케이션 (Namespace: `app`)
@@ -114,7 +115,7 @@ Nachocode.init("your_api_key_here");
 
 #### `getAppName(): string`
 
-저장된 애플리케이션 이름을 반환합니다.
+애플리케이션 이름을 반환합니다.
 
 ```javascript
 const appName = Nachocode.app.getAppName(); // 앱 이름
@@ -122,7 +123,7 @@ const appName = Nachocode.app.getAppName(); // 앱 이름
 
 #### `getAppKey(): string`
 
-저장된 애플리케이션 키를 반환합니다.
+애플리케이션 키를 반환합니다.
 
 ```javascript
 const appKey = Nachocode.app.getAppKey(); // ex. 'APP-XXXXXXX'
@@ -130,18 +131,92 @@ const appKey = Nachocode.app.getAppKey(); // ex. 'APP-XXXXXXX'
 
 #### `getCurrentAppVersion(): string`
 
-현재 설치된 애플리케이션의 버전을 반환합니다.
+사용자의 현재 설치된 애플리케이션 버전을 반환합니다.
 
 ```javascript
-const appVersion = Nachocode.app.getCurrentAppVersion(); // ex. '0.0.2'
+const appVersion = Nachocode.app.getCurrentAppVersion(); // ex. '1.0.0'
 ```
 
 #### `getPackageName(): string`
 
-저장된 애플리케이션 패키지 이름을 반환합니다.
+애플리케이션 패키지 이름을 반환합니다.
 
 ```javascript
 const appPackageName = Nachocode.app.getPackageName(); // ex. 'com.nachocode.xxx'
+```
+
+<!-- markdownlint-disable MD033 -->
+
+## 백 키 (Namespace: `backkey`) <img alt="Android-Only" src="https://img.shields.io/badge/Android-Only?logo=android">
+
+<!-- markdownlint-enable MD033 -->
+
+### Methods (BackKey)
+
+#### `addEvent(event: (eventId: string) => void, eventId?: string): string`
+
+- Android OS의 네이티브 백 키가 눌렸을 때 호출될 이벤트 리스너를 등록합니다.
+- 기본 이벤트가 실행되기 전, 먼저 체크되며 등록이 되어 있을 경우 우선 실행됩니다.
+- FILO (First In Last Out) 방식으로 나중에 등록된 이벤트가 먼저 실행 됩니다.
+
+```javascript
+// 이벤트 ID를 따로 제공하지 않을 경우 1부터 순서대로 아이디를 부여합니다.
+Nachocode.backkey.addEvent(eventId => {
+  console.log('Back key pressed.');
+  console.log(eventId); // 1
+});
+```
+
+```javascript
+// 원하는 특정 이벤트 ID를 부여할 수도 있습니다.
+Nachocode.backkey.addEvent(eventId => {
+  console.log('Back key pressed.');
+  console.log(eventId); // sample
+}, 'sample');
+```
+
+#### `clearEvent(): void`
+
+등록된 모든 백키 이벤트 리스너를 제거합니다.
+
+```javascript
+// 백키를 제어하기 위해 등록한 이벤트 리스너를 전부 제거합니다.
+Nachocode.backkey.clearEvent();
+```
+
+#### `getLastEvent(): string`
+
+제일 마지막으로 등록된 이벤트 리스너의 이벤트 ID를 반환합니다.
+
+```javascript
+// 첫 번째 백키 이벤트 리스너를 등록합니다.
+Nachocode.backkey.addEvent(eventId => {
+  console.log('Back key pressed.');
+  console.log(eventId); // sample1
+}, 'sample1');
+// 두 번째 백키 이벤트 리스너를 등록합니다.
+Nachocode.backkey.addEvent(eventId => {
+  console.log('Back key pressed.');
+  console.log(eventId); // sample2
+}, 'sample2');
+// 마지막 백키 이벤트 리스너의 이벤트 ID를 가져옵니다.
+const eventId = Nachocode.backkey.getLastEvent(); // sample2
+```
+
+#### `removeEvent(eventId?: string): string`
+
+등록된 백키 이벤트 리스너를 제거합니다. `eventId`가 명시되지 않을 경우 기본적으로 마지막으로 등록된 이벤트를 제거합니다.
+
+- 활용 예시 : modal을 백키로 끌 수 있도록 close함수를 이벤트 리스너 등록을 해두었는데 사용자가 백 키가 아닌 x 버튼을 눌러 끌 수 있으므로, x 버튼 클릭 시 등록된 백키 이벤트 리스너를 제거해야합니다.
+
+```javascript
+// 마지막으로 등록된 이벤트를 제거합니다.
+Nachocode.backkey.removeEvent();
+```
+
+```javascript
+// 이벤트 ID로 등록된 특정 이벤트 리스너를 제거합니다.
+Nachocode.backkey.removeEvent('sample');
 ```
 
 ## 브라우저 (Namespace: `browser`)
@@ -161,17 +236,17 @@ const appPackageName = Nachocode.app.getPackageName(); // ex. 'com.nachocode.xxx
 
 ```javascript
 // 기본 옵션 : 'external'
-Nachocode.browser.openLink("https://nachocode.io");
+Nachocode.browser.openLink('https://nachocode.io');
 ```
 
 ```javascript
 // 외부 브라우저로 URL 오픈
-Nachocode.browser.openLink("https://nachocode.io", "external");
+Nachocode.browser.openLink('https://nachocode.io', 'external');
 ```
 
 ```javascript
 // 내부 브라우저로 URL 오픈
-Nachocode.browser.openLink("https://nachocode.io", "internal");
+Nachocode.browser.openLink('https://nachocode.io', 'internal');
 ```
 
 ## 디바이스 (Namespace: `device`)
@@ -195,13 +270,13 @@ const deviceType = Nachocode.device.getType(); // 'Android' | 'iOS' | 'Unknown'
 
 // 유저 디바이스 별로 로직을 다르게 처리하는 예시입니다.
 switch (deviceType) {
-  case "Android": // Android 기기를 의미합니다.
+  case 'Android': // Android 기기를 의미합니다.
     // Android 디바이스에서만 동작할 로직을 작성합니다.
     break;
-  case "iOS": // iPad, iPhone 등 iOS 기기를 의미합니다.
+  case 'iOS': // iPad, iPhone 등 iOS 기기를 의미합니다.
     // iOS 디바이스에서만 동작할 로직을 작성합니다.
     break;
-  case "Unknown": // PC 및 기타 장치를 의미합니다.
+  case 'Unknown': // PC 및 기타 장치를 의미합니다.
   default:
     // 모바일이 아닌 PC 및 기타 환경에서 동작할 로직을 작성합니다.
     break;
@@ -255,6 +330,19 @@ if (Nachocode.device.isIOS()) {
 
 ### Methods (environment)
 
+#### `getAppSourceVersion(): string`
+
+현재 앱 소스 버전을 반환합니다.
+
+- 앱 소스 버전이란 Nachocode에서 제공하는 기본 앱 소스코드의 버전을 의미합니다.
+- SDK 버젼보다 앱 소스 버젼이 낮을 경우 SDK 일부 기능 사용이 제한됩니다.
+
+```javascript
+const currentVersion = Nachocode.env.getAppSourceVersion();
+
+console.log(currentVersion); // ex. 1.2.0
+```
+
 #### `getCurrentEnv(): CurrentEnvironment`
 
 현재 애플리케이션 환경을 반환합니다.
@@ -278,7 +366,7 @@ const runningEnv = Nachocode.env.getRunningEnv(); // 'web' | 'app'
 현재 SDK 버전을 반환합니다.
 
 ```javascript
-const sdkVersion = Nachocode.env.getSDKVersion(); // ex. '1.1.0'
+const sdkVersion = Nachocode.env.getSDKVersion(); // ex. '1.2.0'
 ```
 
 #### `isApp(): boolean`
@@ -293,7 +381,7 @@ if (Nachocode.env.isApp()) {
 
 #### `isInitialized(): boolean`
 
-Nachocode SDK가 초기화되었는지 여부를 반환합니다.
+**Nachocode SDK**가 초기화되었는지 여부를 반환합니다.
 
 ```javascript
 if (Nachocode.env.isInitialized()) {
@@ -304,7 +392,7 @@ if (Nachocode.env.isInitialized()) {
 ```javascript
 // SDK가 초기화 되지 않았다면 초기화를 시도합니다.
 if (!Nachocode.env.isInitialized()) {
-  Nachocode.init("your_api_key_here");
+  Nachocode.init('your_api_key_here');
 }
 ```
 
@@ -334,22 +422,45 @@ if (Nachocode.env.isWeb()) {
 
 ## 이벤트 (Namespace: `event`)
 
+### EventType
+
+Nachocode에서 제공되는 기본 event 입니다.
+
+- `init`: SDK 초기화 시점에 호출되는 이벤트입니다.
+- `background`: 앱이 백그라운드로 넘어 갔을 때 호출되는 이벤트입니다.
+- `foreground`: 앱이 백그라운드에서 다시 포그라운드로 전환 될 때 호출되는 이벤트입니다.
+
 ### Methods (event)
 
 #### `on(eventName: string, callback: function): void`
 
-특정 이벤트명으로 콜백 함수를 바인드합니다.
+Nachocode에서 제공되는 기본 이벤트에 콜백 함수를 바인드합니다.
 
 ```javascript
 // SDK 초기화 후 동작할 이벤트를 등록 합니다.
-Nachocode.event.on("init", () => {
+Nachocode.event.on('init', () => {
   if (Nachocode.env.isApp() && Nachocode.device.isIOS()) {
     // iOS 디바이스에서만 동작할 로직을 작성합니다.
   }
 });
 
 // Nachocode SDK를 초기화 합니다.
-Nachocode.init("your_api_key_here");
+Nachocode.init('your_api_key_here');
+```
+
+```javascript
+// 앱이 백그라운드로 전환될 때 동작할 이벤트를 등록합니다.
+Nachocode.event.on('background', () => {
+  // 앱이 백그라운드로 전환될 때 동작할 로직을 작성합니다.
+});
+```
+
+```javascript
+// 앱이 백그라운드에서 다시 포그라운드로 전환될 때 동작할 이벤트를 등록합니다.
+Nachocode.event.on('foreground', () => {
+  // 앱이 포그라운드로 전환될 때 동작할 로직을 작성합니다.
+  // ex. 페이지 새로고침, 데이터 불러오기 등
+});
 ```
 
 #### `off(eventName: string): void`
@@ -358,7 +469,74 @@ Nachocode.init("your_api_key_here");
 
 ```javascript
 // 'init' 이벤트명으로 바인드 된 event를 제거합니다.
-Nachocode.event.off("init");
+Nachocode.event.off('init');
+```
+
+## 권한 (Namespace: `permission`)
+
+### PermissionType
+
+디바이스의 앱 권한 타입
+
+- `camera`: 카메라 권한
+- `location`: GPS 권한
+- `microphone`: 마이크 권한
+- `push`: 푸시 권한
+
+### Methods (permission)
+
+#### `checkPermission(option: {type: PermissionType, ask?: boolean}, callback?: (granted: boolean) => any): void`
+
+앱 유저가 앱의 해당 권한을 허용하였는지 확인합니다. `ask` 옵션이 `true`일 경우, 허용이 되어있지 않으면 권한을 요청합니다. 콜백 함수의 매개 변수로 허용 여부를 전달합니다.
+
+```javascript
+// ex. 푸시 알림 권한 허용 여부를 확인합니다.
+// 권한을 허용하지 않았을 경우 OS 팝업을 통해 권한을 요청합니다.
+Nachocode.permission.checkPermission({ type: 'push', ask: true }, granted => {
+  // 앱 유저가 권한을 허용여부가 매개 변수 granted에 전달 됩니다.
+  if (granted) {
+    alert('푸시 권한 허용됨.');
+  } else {
+    alert('푸시 권한 거부됨.');
+  }
+});
+```
+
+## 내부 저장소 (Namespace: `preference`)
+
+### Methods (preference)
+
+#### `getData(key: string, callback: (data: string) => any): void`
+
+앱 내부 저장소에 저장된 데이터를 불러옵니다. 콜백함수의 매개 변수로 값이 전달 됩니다.
+
+```javascript
+// ex. 'sample'을 키로 앱 내부 저장소의 데이터를 조회합니다.
+Nachocode.preference.getData('sample', data => {
+  if (data) {
+    alert('Received Data : ' + data);
+  } else {
+    alert('No received data!');
+  }
+});
+```
+
+#### `setData(key: string, data: string): void`
+
+앱 내부 저장소에 특정키로 데이터를 저장합니다.
+
+```javascript
+// ex. 'sample'을 키로 앱 내부 저장소에 데이터를 저장합니다.
+Nachocode.preference.setData('sample', 'sample data');
+
+// ex. 'sample'을 키로 앱 내부 저장소의 데이터를 조회합니다.
+Nachocode.preference.setData('sample', data => {
+  if (data) {
+    alert(data); // sample data
+  } else {
+    alert('No received data!');
+  }
+});
 ```
 
 ## 푸시 알림 (Namespace: `push`)
@@ -402,7 +580,7 @@ function onLogout(userID) {
 
 ```javascript
 // 공유 할 URL. ex) 'https://nachocode.io'
-const sharedURL = "https://nachocode.io";
+const sharedURL = 'https://nachocode.io';
 // 해당 URL을 Native UI로 공유합니다.
 Nachocode.share.openSharing(sharedURL);
 ```
@@ -548,8 +726,8 @@ const usesVibration = Nachocode.vibration.isUsingVibration(); // true | false
 ```javascript
 // DOM 요소의 touchstart 이벤트에 햅틱 피드백 트리거를 바인드 합니다.
 document
-  .getElementById("hapticsButton")
-  .addEventListener("touchstart", function () {
+  .getElementById('hapticsButton')
+  .addEventListener('touchstart', function () {
     // 기본적으로 HapticsType.SUCCESS(=0)를 옵션으로 가집니다.
     Nachocode.vibration.haptics();
   });
@@ -558,8 +736,8 @@ document
 ```javascript
 // DOM 요소의 touchstart 이벤트에 햅틱 피드백 트리거를 바인드 합니다.
 document
-  .getElementById("hapticsButton")
-  .addEventListener("touchstart", function () {
+  .getElementById('hapticsButton')
+  .addEventListener('touchstart', function () {
     // 0은 HapticsType.SUCCESS를 의미합니다.
     Nachocode.vibration.haptics(0);
   });
@@ -568,8 +746,8 @@ document
 ```javascript
 // DOM 요소의 touchstart 이벤트에 햅틱 피드백 트리거를 바인드 합니다.
 document
-  .getElementById("hapticsButton")
-  .addEventListener("touchstart", function () {
+  .getElementById('hapticsButton')
+  .addEventListener('touchstart', function () {
     // 1은 HapticsType.ERROR를 의미합니다.
     Nachocode.vibration.haptics(1);
   });
@@ -581,7 +759,7 @@ document
 
 ```javascript
 // DOM 요소의 click 이벤트에 진동 트리거를 바인드 합니다.
-document.getElementById("vibrateButton").addEventListener("click", function () {
+document.getElementById('vibrateButton').addEventListener('click', function () {
   // 진동 호출
   Nachocode.vibration.vibrate();
 });
