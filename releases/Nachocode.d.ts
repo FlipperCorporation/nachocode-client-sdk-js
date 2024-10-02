@@ -20,11 +20,13 @@ declare global {
 
     /**
      * Initializes the Nachocode SDK with the provided API key and environment setting.
+     * @since 1.0.0
      */
     function init(apiKey: string, options?: InitializeOptions): void;
 
     /**
      * Namespace for application specific functions
+     * @since 1.0.0
      */
     namespace app {
       /**
@@ -53,7 +55,81 @@ declare global {
     }
 
     /**
+     * Namespace for native hardware back key pressed handling
+     *   - Android Only
+     * @since 1.2.0
+     */
+    namespace backkey {
+      /**
+       * Registers an event listener for native back key handler.
+       * If registered, instead of default back key handling, calls registerd callback.
+       * @param {function} event - Function willing to be called when back key pressed.
+       * @returns {string} - Returns registered event id
+       * @example
+       * // Deafult event id provided
+       * Nachocode.backkey.addEvent((eventId) => {
+       *  console.log('Back key pressed.');
+       *  console.log(eventId); // 1
+       * });
+       * @example
+       * // Set specific event id
+       * Nachocode.backkey.addEvent((eventId) => {
+       *  console.log('Back key pressed.');
+       *  console.log(eventId); // sample
+       * }, 'sample');
+       */
+      function addEvent(
+        event: (eventId: string) => void,
+        eventId?: string
+      ): string;
+
+      /**
+       * Removes all of registered event listeners.
+       * @example
+       * // Clears registered back key handling event listeners.
+       * Nachocode.backkey.clearEvents();
+       */
+      function clearEvents(): void;
+
+      /**
+       * Gets last event id
+       * @returns {string} - Returns last registered event id
+       * @example
+       * // Register first event for backkey handling
+       * Nachocode.backkey.addEvent((eventId) => {
+       *  console.log('Back key pressed.');
+       *  console.log(eventId); // sample1
+       * }, 'sample1');
+       *
+       * // Register second event for backkey handling
+       * Nachocode.backkey.addEvent((eventId) => {
+       *  console.log('Back key pressed.');
+       *  console.log(eventId); // sample2
+       * }, 'sample2');
+       *
+       * // Get event id of last registered event.
+       * const eventId = Nachocode.backkey.getLastEvent(); // sample2
+       */
+      function getLastEvent(): string;
+
+      /**
+       * Removes registered event listener for native back key handler.
+       * @param {string} [eventId] - Registered event id
+       * @returns {string} - Returns removed event id
+       * @example
+       * // Deafult removes last event
+       * Nachocode.backkey.removeEvent();
+       * @example
+       * // Remove specific event with event id
+       * Nachocode.backkey.removeEvent('sample');
+       */
+      function removeEvent(eventId?: string): string;
+    }
+
+    /**
      * Namespace for browser-related functions
+     * @since 1.0.3
+     * @lastupdated 1.1.0
      */
     namespace browser {
       /**
@@ -63,9 +139,9 @@ declare global {
       export declare type OpenURLOption = 'external' | 'internal';
 
       /**
-       * Opens the provided URL with the specified options.
+       * Opens the provided URL with the specified option.
        * @param url - The URL to be opened.
-       * @param option - The option for opening the URL.
+       * @param option - The option for the way to open the URL.
        *   - Default : `'external'`
        * @example
        * // Deafult option : 'external'
@@ -82,6 +158,7 @@ declare global {
 
     /**
      * Namespace for device specific functions
+     * @since 1.0.0
      */
     namespace device {
       /**
@@ -117,6 +194,8 @@ declare global {
 
     /**
      * Namespace for environment and configuration
+     * @since 1.0.0
+     * @lastupdated 1.2.0
      */
     namespace env {
       /**
@@ -147,6 +226,14 @@ declare global {
          * Using sandbox server or not
          */
         sandbox: boolean;
+        /**
+         * Current SDK version
+         */
+        sdkVersion: string;
+        /**
+         * Current application source version
+         */
+        srcVersion: string;
       };
 
       /**
@@ -162,6 +249,12 @@ declare global {
          */
         logger?: boolean;
       };
+
+      /**
+       * Retrieves the stored application source version.
+       * @returns {string} The source version of the application.
+       */
+      function getAppSourceVersion(): string;
 
       /**
        * Retrieves the current environment of the application.
@@ -200,29 +293,98 @@ declare global {
     }
 
     /**
-     * Namespace for registered functions called to handle specified events.
+     * Namespace for event handling
+     * @since 1.0.2
+     * @lastupdated 1.2.0
      */
     namespace event {
       /**
+       * Reserved event types
+       */
+      export declare enum EventType {
+        INIT = 'init',
+        BACKGROUND = 'background',
+        FOREGROUND = 'foreground',
+      }
+      /**
        * Registers an event listener for the specified event name.
        */
-      function on(eventName: string, callback: Function): void;
+      function on(eventName: EventType, callback: (params?: any) => any): void;
       /**
        * Unbinds registered event listener for the specified event name.
        */
-      function off(eventName: string): void;
+      function off(eventName: EventType): void;
       /**
        * Registered events
        */
       const callbacks: {
-        [eventName: string]: (response: any) => void;
+        [eventName: EventType]: (response: any) => void;
       };
     }
 
     /**
+     * Namespace for permission handling
+     * @since 1.2.0
+     */
+    namespace permission {
+      /**
+       * Native device permission types
+       */
+      export declare enum PermissionType {
+        CAMERA = 'camera',
+        LOCATION = 'location',
+        MICROPHONE = 'microphone',
+        PUSH = 'push',
+      }
+
+      /**
+       * Checks whether the app user grants the specified permission or not.
+       * Asks if optional parameter `ask` is set `true`.
+       */
+      function checkPermission(
+        option: {
+          type: PermissionType;
+          ask?: boolean;
+        },
+        callback?: (granted: boolean) => any
+      ): void;
+    }
+
+    /**
+     * Namespace for preference app storage functions
+     * @since 1.2.0
+     */
+    namespace preference {
+      /**
+       * Retrieves the data with the specified key
+       * from native layer's preference area.
+       * Calls callback function with selected data.
+       */
+      function getData(key: string, callback: (data: string) => any): void;
+
+      /**
+       * Sets the data with the specified key
+       * into native layer's preference area.
+       */
+      function setData(key: string, data: string): void;
+    }
+
+    /**
      * Namespace for push notification functions
+     * @since 1.0.0
+     * @lastupdated 1.0.3
      */
     namespace push {
+      /**
+       * Asks for the permission for push notifications.
+       */
+      function askPushPermission(): Promise<void>;
+
+      /**
+       * Gets the permission status for push notifications.
+       */
+      function getPushPermission(): Promise<boolean>;
+
       /**
        * Asynchronously retrieves the push token.
        */
@@ -243,16 +405,92 @@ declare global {
 
     /**
      * Namespace for share functions
+     * @since 1.1.0
+     * @lastupdated 1.2.0
      */
     namespace share {
       /**
        * Opens the native sharing UI with the provided URL.
+       * @since 1.1.0
        */
       function openSharing(url: string): void;
+
+      /**
+       * Native Kakao sharing type
+       */
+      export declare enum KakaoShareType {
+        CUSTOM = 'custom',
+        SCRAP = 'scrap',
+      }
+
+      /**
+       * Native Kakao custom data to send
+       */
+      export declare type KakaoShareCustom = {
+        templateId: number;
+        templateArgs?: {
+          [key: string]: string;
+        };
+        serverCallbackArgs?: {
+          [key: string]: string;
+        };
+      };
+
+      /**
+       * Native Kakao scrap data to send
+       */
+      export declare type KakaoShareScrap = {
+        requestUrl: string;
+        templateId?: number;
+        templateArgs?: {
+          [key: string]: string;
+        };
+        serverCallbackArgs?: {
+          [key: string]: string;
+        };
+      };
+
+      /**
+       * Kakao share result status code
+       */
+      export declare enum KakaoShareResultStatusCode {
+        ERROR_JSON_FAILED = 102,
+        ERROR_JSON_FAILED_TO_MODEL = 103,
+        ERROR_JSON_FAILED_TO_KAKAO_MODEL = 104,
+        ERROR_JSON_WRONG_SHARE_TYPE = 105,
+        ERROR_JSON_EMPTY_REQUEST_URL = 106,
+        ERROR_JSON_EMPTY_TEMPLATE_ID = 108,
+        ERROR_KAKAO_FAILED = 199,
+        SUCCESS_KAKAO = 200,
+        SUCCESS_SAFARI = 201,
+      }
+
+      /**
+       * Kakao share result
+       */
+      export declare type KakaoShareResult = {
+        status: 'error' | 'success';
+        statusCode: KakaoShareStatusCode;
+        message?: string;
+      };
+
+      /**
+       * Send Kakao sharing
+       * @param type - Kakao sharing type
+       * @param data - Data to send kakao
+       * @param callback - Callback function called after sharing kakao
+       * @since 1.2.0
+       */
+      function sendKakao(
+        type: KakaoShareType,
+        data: KakaoShareCustom | KakaoShareScrap,
+        callback?: (result: KakaoShareResult) => void
+      ): void;
     }
 
     /**
      * Namespace for tabbar functions
+     * @since 1.0.3
      */
     namespace tabbar {
       /**
@@ -274,6 +512,7 @@ declare global {
 
     /**
      * Namespace for vibration functions
+     * @since 1.2.0
      */
     namespace vibration {
       /**
