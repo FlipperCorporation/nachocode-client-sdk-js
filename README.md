@@ -1,7 +1,7 @@
 # Nachocode SDK 통합 가이드
 
 - **Nachocode SDK**를 웹 애플리케이션에서 활용하는 과정을 안내합니다. 이 가이드를 통해 **Nachocode SDK**의 기능을 웹 사이트에 손쉽게 추가할 수 있습니다.
-- 최신화 일자 : 2024-10-02
+- 최신화 일자 : 2024-11-20
 
 ## SDK 설정 방법
 
@@ -12,7 +12,7 @@
 - 웹 페이지의 `<body>` 태그 안에 다음과 같은 스크립트 태그를 추가합니다. 이 스크립트는 **Nachocode SDK**를 웹 페이지에 로드합니다.
 
 ```html
-<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.2.0/client-sdk.min.js"></script>
+<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.3.0/client-sdk.min.js"></script>
 ```
 
 ### 2. SDK 초기화
@@ -63,10 +63,10 @@ console.log(appName);
 <script src="https://cdn.nachocode.io/nachocode/client-sdk/@latest/client-sdk.min.js"></script>
 ```
 
-- 현재 최신 버전 v1.2.0
+- 현재 최신 버전 v1.3.0
 
 ```html
-<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.2.0/client-sdk.min.js"></script>
+<script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.3.0/client-sdk.min.js"></script>
 ```
 
 ## 초기화
@@ -111,6 +111,9 @@ Nachocode.init('your_api_key_here');
 
 ## 애플리케이션 (Namespace: `app`)
 
+> 애플리케이션 정보를 관리하는 네임스페이스 입니다.
+> 앱 이름, 버전, 패키지 이름 등의 애플리케이션 데이터를 불러올 수 잇습니다.
+
 ### Methods (Application)
 
 #### `getAppName(): string`
@@ -145,11 +148,65 @@ const appVersion = Nachocode.app.getCurrentAppVersion(); // ex. '1.0.0'
 const appPackageName = Nachocode.app.getPackageName(); // ex. 'com.nachocode.xxx'
 ```
 
+## 인증 (Namespace: `authentication`)
+
+> 사용자 인증과 관련한 기능을 담당하는 네임스페이스입니다.
+
+### AuthenticationResult
+
+인증 결과를 나타내는 타입입니다.
+
+- `authenticated: boolean`: 인증 성공 여부입니다.
+- `error?: { code: string, message: string }`: (_optional_) 실패 시 실패 코드와 사유를 저장하여 전달되는 객체입니다.
+
+### Methods (Authentication)
+
+#### `canUseBiometrics(callback: (available: boolean, error?: { code: string, message: string }) => any): void`
+
+현재 디바이스에서 생체 인증 기능을 사용할 수 있는지 여부를 반환합니다.
+
+- 특정 디바이스에서는 생체인증이 불가능할 수 있습니다.
+- 앱 사용자의 선택에 따라 생체인증을 사용하지 않을 수 있습니다.
+
+```javascript
+// ex. 디바이스의 생체 인증 사용 가능 여부를 확인합니다.
+Nachocode.authentication.canUseBiometrics((available, error) => {
+  const message =
+    // 디바이스의 생체 인증 사용 가능 여부가 매개 변수 available에 전달 됩니다.
+    `사용 가능 여부 : ${available ? '가능' : '불가능'}` +
+    // 사용이 불가할 경우, 사유가 error.message에 담겨 전달됩니다.
+    `${error ? `\n코드 : ${error.code}\n사유 : ${error.message}` : ''}`;
+
+  alert(message);
+});
+```
+
+#### `useBiometrics(callback: (result: AuthenticationResult) => any): void`
+
+네이티브 생체 인증 기능을 호출 합니다.
+
+사용자가 인증에 실패하거나, 인증을 중단하면 `AuthenticationResult`에서 `authenticated`가 `false`로 반환되며, `error` 객체에 실패 원인이 전달됩니다.
+
+```javascript
+// 네이티브 생체 인증 기능을 호출 합니다.
+Nachocode.authentication.useBiometrics(result => {
+  const message =
+    `인증 여부 : ${result?.authenticated ? '인증됨' : '인증안됨'}\n` +
+    `상태 코드 : ${result?.error?.code ?? '없음'}\n` +
+    `에러 메시지 : ${result?.error?.message ?? '없음'}`;
+
+  alert(message);
+});
+```
+
 <!-- markdownlint-disable MD033 -->
 
 ## 백 키 (Namespace: `backkey`) <img alt="Android-Only" src="https://img.shields.io/badge/Android-Only?logo=android">
 
 <!-- markdownlint-enable MD033 -->
+
+> Android 네이티브 백 키를 제어하는 네임스페이습니다.
+> 기본 백 키 동작을 오버라이드하고 사용자 지정 이벤트를 등록할 수 있습니다.
 
 ### Methods (BackKey)
 
@@ -221,11 +278,14 @@ Nachocode.backkey.removeEvent('sample');
 
 ## 브라우저 (Namespace: `browser`)
 
+> 앱에서 링크를 열기 위한 브라우저 관련 기능을 제공하는 네임스페이스입니다.
+> 외부 브라우저 또는 앱 내부 브라우저를 사용할 수 있습니다.
+
 ### OpenURLOption
 
 브라우저 옵션을 나타내는 타입입니다.
 
-- `external`: 외부 브라우저 의미합니다. (safari, chrome, naver 등)
+- `external`: 외부 브라우저를 의미합니다. (safari, chrome, naver 등)
 - `internal`: 앱 내부 브라우저를 의미합니다.
 
 ### Methods (Browser)
@@ -251,6 +311,9 @@ Nachocode.browser.openLink('https://nachocode.io', 'internal');
 
 ## 디바이스 (Namespace: `device`)
 
+> 디바이스 정보와 상태 확인을 위한 네임스페이스입니다.
+> 디바이스 유형, 네트워크 상태, 배터리 정보 등을 불러올 수 있습니다.
+
 ### DeviceType
 
 디바이스 유형을 나타내는 열거형입니다.
@@ -259,7 +322,73 @@ Nachocode.browser.openLink('https://nachocode.io', 'internal');
 - `iOS`: iOS 디바이스를 나타냅니다.
 - `Unknown`: 알 수 없는 디바이스 유형입니다.
 
+### NetworkConnectionType
+
+네트워크 연결 유형을 나타내는 열거형입니다.
+
+- `Wi-Fi`: Wi-Fi 네트워크를 나타냅니다.
+- `Cellular`: 셀룰러 네트워크를 나타냅니다.
+- `Ethernet`: 이더넷 네트워크를 나타냅니다.
+- `No Internet Connection`: 알 수 없는 네트워크이거나 연결이 끊겼음을 나타냅니다.
+
 ### Methods (Device)
+
+#### `getBatteryLevel(callback: (status: { batteryLevel: number, isCharging: boolean }) => any): void`
+
+디바이스의 배터리 상태를 반환합니다. 배터리 레벨과 충전 상태를 콜백 함수의 매개변수로 전달합니다.
+
+- `batterLevel: number` : 배터리의 현재 충전 비율 (`0` ~ `100`)
+- `isCharging: boolean` : 디바이스가 충전 중인지 여부 (`true`/`false`)
+
+```javascript
+// 디바이스의 배터리 상태를 불러옵니다.
+Nachocode.device.getBatteryLevel(status => {
+  const message =
+    `충전 여부: ${status.isCharging ? '충전 중' : '충전 중 아님'}\n` +
+    `현재 배터리: ${status.batteryLevel ?? '알 수 없음'}`;
+
+  alert(message);
+});
+```
+
+#### `getDeviceModel(): string`
+
+디바이스의 모델명을 반환합니다.
+
+- [구글 공식 문서](https://storage.googleapis.com/play_public/supported_devices.html)에서 Android 지원되는 모델 목록을 확인할 수 있습니다.
+- Nachocode에서는 자주 쓰이는 디바이스 모델명을 정리하여 json 형태로 제공하고 있습니다.
+  - iOS : [https://cdn.nachocode.io/nachocode/client-sdk/assets/device-ios-model.json](https://cdn.nachocode.io/nachocode/client-sdk/assets/device-ios-model.json)
+  - Android : [https://cdn.nachocode.io/nachocode/client-sdk/assets/device-android-samsung-model.json](https://cdn.nachocode.io/nachocode/client-sdk/assets/device-android-samsung-model.json)
+
+```javascript
+// 디바이스의 모델명을 불러옵니다.
+const deviceModel = Nachocode.device.getDeviceModel();
+console.log(deviceModel); // ex. SM-S928N
+```
+
+#### `getDeviceOS(): { os: DeviceType, version: string }`
+
+디바이스의 OS (Android/iOS) 유형과 버전 정보를 포함한 객체를 반환합니다.
+
+```javascript
+// 디바이스의 OS 정보를 불러옵니다.
+const deviceOS = Nachocode.device.getDeviceOS();
+console.log(deviceOS); // ex. { os: 'Android', version: '34(14)' }
+```
+
+#### `getNetworkStatus(callback: (status: { isConnected: boolean, connectionType: NetworkConnectionType }) => any ): void`
+
+디바이스의 네트워크 연결 상태를 반환합니다. 연결 여부와 연결 유형을 콜백으로 전달합니다.
+
+- `isConnected`: 네트워크 연결 여부 (`true`/`false`).
+- `connectionType`: 연결 유형 (Wi-Fi, Cellular, Ethernet 등).
+
+```javascript
+Nachocode.device.getNetworkStatus(status => {
+  const connectionInfo = `네트워크 상태: ${status.isConnected ? '연결됨' : '연결되지 않음'}\n연결 유형: ${status.connectionType}`;
+  alert(connectionInfo);
+});
+```
 
 #### `getType(): DeviceType`
 
@@ -270,10 +399,10 @@ const deviceType = Nachocode.device.getType(); // 'Android' | 'iOS' | 'Unknown'
 
 // 유저 디바이스 별로 로직을 다르게 처리하는 예시입니다.
 switch (deviceType) {
-  case 'Android': // Android 기기를 의미합니다.
+  case 'Android': // Android 디바이스를 의미합니다.
     // Android 디바이스에서만 동작할 로직을 작성합니다.
     break;
-  case 'iOS': // iPad, iPhone 등 iOS 기기를 의미합니다.
+  case 'iOS': // iPad, iPhone 등 iOS 디바이스를 의미합니다.
     // iOS 디바이스에서만 동작할 로직을 작성합니다.
     break;
   case 'Unknown': // PC 및 기타 장치를 의미합니다.
@@ -304,6 +433,9 @@ if (Nachocode.device.isIOS()) {
 ```
 
 ## 환경 및 설정 (Namespace: `env`)
+
+> SDK의 현재 환경 및 설정을 관리하는 네임스페이스입니다.
+> SDK 버전, 실행 환경 (Web/APP), 샌드박스 모드 여부 등을 확인할 수 있습니다.
 
 ### RunningEnvironment
 
@@ -340,7 +472,7 @@ if (Nachocode.device.isIOS()) {
 ```javascript
 const currentVersion = Nachocode.env.getAppSourceVersion();
 
-console.log(currentVersion); // ex. 1.2.0
+console.log(currentVersion); // ex. 1.3.0
 ```
 
 #### `getCurrentEnv(): CurrentEnvironment`
@@ -366,7 +498,7 @@ const runningEnv = Nachocode.env.getRunningEnv(); // 'web' | 'app'
 현재 SDK 버전을 반환합니다.
 
 ```javascript
-const sdkVersion = Nachocode.env.getSDKVersion(); // ex. '1.2.0'
+const sdkVersion = Nachocode.env.getSDKVersion(); // ex. '1.3.0'
 ```
 
 #### `isApp(): boolean`
@@ -422,6 +554,9 @@ if (Nachocode.env.isWeb()) {
 
 ## 이벤트 (Namespace: `event`)
 
+> SDK에서 제공하는 기본 이벤트 관리 네임스페이스입니다.
+> 초기화, 백그라운드 및 포그라운드 전환 시점에 발생하는 이벤트에 대한 리스너를 등록하거나 해제할 수 있습니다.
+
 ### EventType
 
 Nachocode에서 제공되는 기본 event 입니다.
@@ -474,12 +609,14 @@ Nachocode.event.off('init');
 
 ## 권한 (Namespace: `permission`)
 
+> 카메라, 위치, 마이크 등의 디바이스 권한을 확인하고 요청할 수 있는 네임스페이스입니다.
+
 ### PermissionType
 
 디바이스의 앱 권한 타입
 
 - `camera`: 카메라 권한
-- `location`: GPS 권한
+- `location`: 위치 권한
 - `microphone`: 마이크 권한
 - `push`: 푸시 권한
 
@@ -503,6 +640,8 @@ Nachocode.permission.checkPermission({ type: 'push', ask: true }, granted => {
 ```
 
 ## 내부 저장소 (Namespace: `preference`)
+
+> 네이티브 환경의 내부 저장소를 활용하여 앱 내 데이터를 저장하고 관리하는 기능을 제공합니다.
 
 ### Methods (preference)
 
@@ -541,6 +680,9 @@ Nachocode.preference.setData('sample', data => {
 
 ## 푸시 알림 (Namespace: `push`)
 
+> 푸시 알림 관련 기능을 관리하는 네임스페이스입니다.
+> 푸시 토큰을 Nachocode 서버에 등록 및 삭제하는 등의 기능을 제공합니다.
+
 ### Methods (push)
 
 #### `registerPushToken(userID: string): Promise<any>`
@@ -570,7 +712,30 @@ function onLogout(userID) {
 }
 ```
 
+## 새로고침 (Namespace: `refresh`)
+
+> 새로고침 관련 기능을 제어하는 네임스페이스입니다.
+> 사용자가 화면을 아래로 당겨 페이지를 새로고침할 수 있도록 설정을 제어할 수 있는 기능 등을 제공합니다.
+
+### Methods (refresh)
+
+#### `setPullToRefresh(enable: boolean): void`
+
+사용자가 화면을 아래로 당겨 새로고침할 수 있도록 하는 `Pull to Refresh` 기능을 활성화하거나 비활성화합니다.
+
+```javascript
+// `Pull to Refresh` 기능을 활성화합니다.
+Nachocode.refresh.setPullToRefresh(true);
+```
+
+```javascript
+// `Pull to Refresh` 기능을 비활성화합니다.
+Nachocode.refresh.setPullToRefresh(false);
+```
+
 ## 공유 (Namespace: `share`)
+
+> 네이티브 공유 UI를 통해 공유 기능을 제공하는 네임스페이스입니다.
 
 ### Methods (share)
 
@@ -585,11 +750,100 @@ const sharedURL = 'https://nachocode.io';
 Nachocode.share.openSharing(sharedURL);
 ```
 
+#### `KakaoShareType`
+
+```typescript
+declare enum KakaoShareType {
+  CUSTOM = 'custom',
+  SCRAP = 'scrap',
+}
+```
+
+- `'custom'`: 미리 만들어둔 커스텀 템플릿으로 카카오톡 공유하기 메시지를 전송합니다.
+- `'scrap'`: URL을 활용하여 카카오톡 스크랩 공유하기 메시지를 전송합니다. 선택적으로 미리 만들어둔 템플릿을 활용할 수 있습니다.
+
+#### `KakaoShareCustom`
+
+```typescript
+declare type KakaoShareCustom = {
+  templateId: number;
+  templateArgs?: {
+    [key: string]: string;
+  };
+  serverCallbackArgs?: {
+    [key: string]: string;
+  };
+};
+```
+
+- `templateId`: kakao developers 웹 사이트에 등록된 메시지 템플릿 아이디
+- `templateArgs`: (_optional_) 메시지 템플릿에 미리 등록된 arguments 키와 가변적으로 넣어줄 값
+- `serverCallbackArgs`: (_optional_) 카카오톡 공유하기 결과를 서버에서 처리하고 싶을 때 arguments로 넘겨줄 키와 값
+
+#### `KakaoShareScrap`
+
+```typescript
+declare type KakaoShareScrap = {
+  requestUrl: string;
+  templateId?: number;
+  templateArgs?: {
+    [key: string]: string;
+  };
+  serverCallbackArgs?: {
+    [key: string]: string;
+  };
+};
+```
+
+- `requestUrl`: 스크랩 공유할 URL
+- `templateId`: (_optional_) kakao developers 사이트에 미리 만들어둔 메시지 템플릿의 ID
+- `templateArgs`: (_optional_) 메시지 템플릿에 미리 등록된 arguments 키와 가변적으로 넣어줄 값
+- `serverCallbackArgs`: (_optional_) 카카오톡 공유하기 결과를 서버에서 처리하고 싶을 때 arguments로 넘겨줄 키와 값
+
+#### `KakaoShareResultStatusCode`
+
+```typescript
+declare enum KakaoShareResultStatusCode {
+  ERROR_JSON_FAILED = 102,
+  ERROR_JSON_FAILED_TO_MODEL = 103,
+  ERROR_JSON_FAILED_TO_KAKAO_MODEL = 104,
+  ERROR_JSON_WRONG_SHARE_TYPE = 105,
+  ERROR_JSON_EMPTY_REQUEST_URL = 106,
+  ERROR_JSON_EMPTY_TEMPLATE_ID = 108,
+  ERROR_KAKAO_FAILED = 199,
+  SUCCESS_KAKAO = 200,
+  SUCCESS_SAFARI = 201,
+}
+```
+
+#### `KakaoShareResult`
+
+```typescript
+declare type KakaoShareResult = {
+  status: 'error' | 'success';
+  statusCode: KakaoShareStatusCode;
+  message?: string;
+};
+```
+
+#### `sendKakao` (카카오톡 공유하기)
+
+```typescript
+sendKakao(
+  type: KakaoShareType,
+  data: KakaoShareCustom | KakaoShareScrap,
+  callback?: (result: KakaoShareResult) => void
+): void
+```
+
 ## 탭바 (Namespace: `tabbar`)
+
+> 앱 내 탭바 관련 기능을 제공하는 네임스페이스입니다.
+> 탭바의 표시 여부와 특정 탭으로의 전환 등을 제어합니다.
 
 ### Methods (tabbar)
 
-#### `moveTo(index: number): Promise<void>`
+#### `moveTo(index: number): void`
 
 특정 index의 탭으로 전환합니다. Nachocode 대시보드에서 탭바를 먼저 등록 후 빌드해야합니다.
 
@@ -600,7 +854,7 @@ Nachocode.tabbar.moveTo(0);
 Nachocode.tabbar.moveTo(1);
 ```
 
-#### `show(): Promise<void>`
+#### `show(): void`
 
 탭바를 화면에서 다시 보이게 합니다. Nachocode 대시보드에서 탭바를 먼저 등록 후 빌드해야합니다.
 
@@ -609,7 +863,7 @@ Nachocode.tabbar.moveTo(1);
 Nachocode.tabbar.show();
 ```
 
-#### `hide(): Promise<void>`
+#### `hide(): void`
 
 탭바를 화면에서 숨깁니다. Nachocode 대시보드에서 탭바를 먼저 등록 후 빌드해야합니다.
 
@@ -619,6 +873,9 @@ Nachocode.tabbar.hide();
 ```
 
 ## 진동 (Namespace: `vibration`)
+
+> 진동 및 햅틱 피드백을 제어하는 네임스페이스입니다.
+> 디바이스에서 진동 기능을 활성화하거나 호출하여 진동을 트리거할 수 있습니다.
 
 ### HapticsType
 
@@ -701,7 +958,7 @@ Nachocode.vibration.getVibration(enable => {
 
 #### `isUsingHaptics(): boolean`
 
-로컬 스토리지에서 사용자의 햅틱 피드백 사용유무를 받아옵니다.
+앱 Preference 스토리지에서 사용자의 햅틱 피드백 사용유무를 받아옵니다.
 
 ```javascript
 // 저장 된 사용자 햅틱 피드백 사용유무 확인
@@ -710,7 +967,7 @@ const usesHaptics = Nachocode.vibration.isUsingHaptics(); // true | false
 
 #### `isUsingVibration(): boolean`
 
-로컬 스토리지에서 사용자의 진동 사용유무를 받아옵니다.
+앱 Preference 스토리지에서 사용자의 진동 사용유무를 받아옵니다.
 
 ```javascript
 // 저장 된 사용자 진동 사용유무 확인

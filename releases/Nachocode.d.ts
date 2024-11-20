@@ -1,9 +1,26 @@
 declare global {
+  /**
+   * Nachocode JavaScript Client SDK Type Declaration v1.3.0
+   *
+   * GitHub
+   *   - https://github.com/FlipperCorporation/nachocode-client-sdk-js
+   *
+   * CDN
+   *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.3.0/Nachocode.d.ts
+   *
+   * Last Updated Date: 2024-11-11
+   */
   namespace Nachocode {
     /**
      * An error thrown when attempting to use the SDK before it has been initialized.
      */
     export declare class NotInitializedError extends Error {}
+
+    export declare interface SDKError {
+      code: `ERR-${string}`;
+      message: string;
+    }
+
     /**
      * Options for Nachocode SDK environment
      */
@@ -19,6 +36,11 @@ declare global {
     };
 
     /**
+     * Version string
+     */
+    export declare type VersionString = `${number}.${number}.${number}`;
+
+    /**
      * Initializes the Nachocode SDK with the provided API key and environment setting.
      * @since 1.0.0
      */
@@ -32,26 +54,62 @@ declare global {
       /**
        * Retrieves the stored application name.
        * @returns {string} The name of the application.
+       * @since 1.0.0
        */
       function getAppName(): string;
 
       /**
        * Retrieves the stored application key.
        * @returns {string} The key of the application.
+       * @since 1.0.0
        */
       function getAppKey(): string;
 
       /**
        * Retrieves the stored application version.
-       * @returns {string} The current version of the applicaiton installed.
+       * @returns {VersionString} The current version of the applicaiton installed.
+       * @since 1.0.0
        */
-      function getCurrentAppVersion(): string;
+      function getCurrentAppVersion(): VersionString;
 
       /**
        * Retrieves the stored application package name.
        * @returns {string} The package name of the application.
+       * @since 1.0.0
        */
       function getPackageName(): string;
+    }
+
+    /**
+     * Namespace for authentication handling
+     * @since 1.3.0
+     */
+    namespace authentication {
+      /**
+       * Authentication result
+       */
+      export declare type AuthenticationResult = {
+        authenticated: boolean;
+        error?: SDKError;
+      };
+
+      /**
+       * Function to check availability of biometrics authentication.
+       * Calls callback function with the value whether it is available or not.
+       * @since 1.3.0
+       */
+      function canUseBiometrics(
+        callback: (available: boolean, error?: SDKError) => any
+      ): void;
+
+      /**
+       * Function to use native biometrics authentication.
+       * Calls callback function with the authentication result.
+       * @since 1.3.0
+       */
+      function useBiometrics(
+        callback: (result: AuthenticationResult) => any
+      ): void;
     }
 
     /**
@@ -77,6 +135,7 @@ declare global {
        *  console.log('Back key pressed.');
        *  console.log(eventId); // sample
        * }, 'sample');
+       * @since 1.2.0
        */
       function addEvent(
         event: (eventId: string) => void,
@@ -88,6 +147,7 @@ declare global {
        * @example
        * // Clears registered back key handling event listeners.
        * Nachocode.backkey.clearEvents();
+       * @since 1.2.0
        */
       function clearEvents(): void;
 
@@ -109,6 +169,7 @@ declare global {
        *
        * // Get event id of last registered event.
        * const eventId = Nachocode.backkey.getLastEvent(); // sample2
+       * @since 1.2.0
        */
       function getLastEvent(): string;
 
@@ -122,6 +183,7 @@ declare global {
        * @example
        * // Remove specific event with event id
        * Nachocode.backkey.removeEvent('sample');
+       * @since 1.2.0
        */
       function removeEvent(eventId?: string): string;
     }
@@ -136,7 +198,7 @@ declare global {
        * Option for opening a URL.
        *   - Default : 'external'
        */
-      export declare type OpenURLOption = 'external' | 'internal';
+      export declare type OpenURLOption = "external" | "internal";
 
       /**
        * Opens the provided URL with the specified option.
@@ -152,6 +214,7 @@ declare global {
        * @example
        * // Open internal browser
        * Nachocode.browser.openLink('https://nachocode.io', 'internal');
+       * @since 1.0.3
        */
       function openLink(url: string, option?: OpenURLOption): void;
     }
@@ -159,35 +222,91 @@ declare global {
     /**
      * Namespace for device specific functions
      * @since 1.0.0
+     * @lastupdated 1.3.0
      */
     namespace device {
       /**
        * Enum for device types
        */
       export declare enum DeviceType {
-        ANDROID = 'Android',
-        IOS = 'iOS',
-        UNKNOWN = 'Unknown',
+        ANDROID = "Android",
+        IOS = "iOS",
+        UNKNOWN = "Unknown",
+      }
+
+      /**
+       * Enum for network connection types
+       */
+      export declare enum NetworkConnectionType {
+        WIFI = "Wi-Fi",
+        CELLULAR = "Cellular",
+        ETHERNET = "Ethernet",
+        UNKNOWN = "No Internet Connection",
       }
 
       /**
        * Detect the device type using the User-Agent string.
        * @returns {DeviceType} The detected device type (e.g., "Android", "iOS", "Unknown").
+       * @since 1.0.0
        */
       function detectType(): DeviceType;
 
       /**
+       * Retrieves the battery level of the device from native layer.
+       * Calls callback function with the value.
+       * @example
+       * Nachocode.device.getBatteryLevel(status => {
+       *   const message =
+       *     `충전 여부 : ${status.isCharging ? '충전 중' : '충전 중 아님'}\n` +
+       *     `현재 배터리 : ${status.batteryLevel || '알 수 없음'}`;
+       *   alert(message);
+       * });
+       * @since 1.3.0
+       */
+      function getBatteryLevel(
+        callback: (status: { batteryLevel: number; isCharging: boolean }) => any
+      ): void;
+
+      /**
+       * Retrieves the device model from the native layer.
+       * @see {@link https://storage.googleapis.com/play_public/supported_devices.html} for full supported android devices info
+       * @since 1.3.0
+       */
+      function getDeviceModel(): string;
+
+      /**
+       * Retrieves the device os from the native layer.
+       * @since 1.3.0
+       */
+      function getDeviceOS(): { os: DeviceType; version: string };
+
+      /**
+       * Retrieves the network status from the native layer.
+       * Calls callback function with the value.
+       * @since 1.3.0
+       */
+      function getNetworkStatus(
+        callback: (status: {
+          isConnected: boolean;
+          connectionType: NetworkConnectionType;
+        }) => any
+      ): void;
+
+      /**
        * Retrieves the type of the device.
+       * @since 1.0.0
        */
       function getType(): DeviceType;
 
       /**
        * Returns whether current device is Android or not.
+       * @since 1.0.0
        */
       function isAndroid(): boolean;
 
       /**
        * Returns whether current device is iOS or not.
+       * @since 1.0.0
        */
       function isIOS(): boolean;
     }
@@ -202,8 +321,8 @@ declare global {
        * Enum for Nachocode applicaiton running environment
        */
       export declare enum RunningEnvironment {
-        WEB = 'web',
-        APP = 'app',
+        WEB = "web",
+        APP = "app",
       }
 
       /**
@@ -229,11 +348,11 @@ declare global {
         /**
          * Current SDK version
          */
-        sdkVersion: string;
+        sdkVersion: VersionString;
         /**
          * Current application source version
          */
-        srcVersion: string;
+        srcVersion: VersionString;
       };
 
       /**
@@ -252,42 +371,50 @@ declare global {
 
       /**
        * Retrieves the stored application source version.
-       * @returns {string} The source version of the application.
+       * @returns {VersionString} The source version of the application.
+       * @since 1.2.0
        */
-      function getAppSourceVersion(): string;
+      function getAppSourceVersion(): VersionString;
 
       /**
        * Retrieves the current environment of the application.
+       * @since 1.0.0
        */
       function getCurrentEnv(): CurrentEnvironment;
 
       /**
        * Retrieves the running environment whether Web or App.
+       * @since 1.0.0
        */
       function getRunningEnv(): RunningEnvironment;
 
       /**
        * Retrieves the current SDK version.
+       * @since 1.0.0
        */
-      function getSDKVersion(): string;
+      function getSDKVersion(): VersionString;
 
       /**
        * Check whether the application is running on `Native Applicaiton`.
+       * @since 1.0.0
        */
       function isApp(): boolean;
 
       /**
        * Checks whether the Nachocode SDK is initialized.
+       * @since 1.0.0
        */
       function isInitialized(): boolean;
 
       /**
        * Checks whether currently using sandbox server.
+       * @since 1.0.0
        */
       function isUsingSandbox(): boolean;
 
       /**
        * Check whether the application is running on `Web Applicaiton`.
+       * @since 1.0.0
        */
       function isWeb(): boolean;
     }
@@ -302,16 +429,18 @@ declare global {
        * Reserved event types
        */
       export declare enum EventType {
-        INIT = 'init',
-        BACKGROUND = 'background',
-        FOREGROUND = 'foreground',
+        INIT = "init",
+        BACKGROUND = "background",
+        FOREGROUND = "foreground",
       }
       /**
        * Registers an event listener for the specified event name.
+       * @since 1.0.2
        */
       function on(eventName: EventType, callback: (params?: any) => any): void;
       /**
        * Unbinds registered event listener for the specified event name.
+       * @since 1.0.3
        */
       function off(eventName: EventType): void;
       /**
@@ -329,17 +458,19 @@ declare global {
     namespace permission {
       /**
        * Native device permission types
+       * @since 1.2.0
        */
       export declare enum PermissionType {
-        CAMERA = 'camera',
-        LOCATION = 'location',
-        MICROPHONE = 'microphone',
-        PUSH = 'push',
+        CAMERA = "camera",
+        LOCATION = "location",
+        MICROPHONE = "microphone",
+        PUSH = "push",
       }
 
       /**
        * Checks whether the app user grants the specified permission or not.
        * Asks if optional parameter `ask` is set `true`.
+       * @since 1.2.0
        */
       function checkPermission(
         option: {
@@ -353,18 +484,28 @@ declare global {
     /**
      * Namespace for preference app storage functions
      * @since 1.2.0
+     * @lastupdated 1.3.0
      */
     namespace preference {
+      /**
+       * Deletes the data from native layer's preference area
+       * with the specified key.
+       * @since 1.3.0
+       */
+      function deleteData(key: string): void;
+
       /**
        * Retrieves the data with the specified key
        * from native layer's preference area.
        * Calls callback function with selected data.
+       * @since 1.2.0
        */
       function getData(key: string, callback: (data: string) => any): void;
 
       /**
        * Sets the data with the specified key
        * into native layer's preference area.
+       * @since 1.2.0
        */
       function setData(key: string, data: string): void;
     }
@@ -372,35 +513,46 @@ declare global {
     /**
      * Namespace for push notification functions
      * @since 1.0.0
-     * @lastupdated 1.0.3
+     * @lastupdated 1.2.0
      */
     namespace push {
       /**
        * Asks for the permission for push notifications.
+       * @since 1.2.0
        */
-      function askPushPermission(): Promise<void>;
-
-      /**
-       * Gets the permission status for push notifications.
-       */
-      function getPushPermission(): Promise<boolean>;
+      function askPushPermission(): void;
 
       /**
        * Asynchronously retrieves the push token.
+       * @since 1.0.0
        */
       function getPushToken(): Promise<string>;
 
       /**
        * Registers the push token to the Nachocode server.
        * @param userID - Client user identifier
+       * @since 1.0.0
        */
       function registerPushToken(userID: string): Promise<any>;
 
       /**
        * Deletes the push token with the user identifier.
        * @param userID - Client user identifier
+       * @since 1.0.0
        */
       function deletePushToken(userID: string): Promise<any>;
+    }
+
+    /**
+     * Namespace for refresh related functions
+     * @since 1.3.0
+     */
+    namespace refresh {
+      /**
+       * Set whether pull to refresh feature is enabled or not.
+       * @since 1.3.0
+       */
+      function setPullToRefresh(enable: boolean): void;
     }
 
     /**
@@ -419,8 +571,8 @@ declare global {
        * Native Kakao sharing type
        */
       export declare enum KakaoShareType {
-        CUSTOM = 'custom',
-        SCRAP = 'scrap',
+        CUSTOM = "custom",
+        SCRAP = "scrap",
       }
 
       /**
@@ -469,7 +621,7 @@ declare global {
        * Kakao share result
        */
       export declare type KakaoShareResult = {
-        status: 'error' | 'success';
+        status: "error" | "success";
         statusCode: KakaoShareStatusCode;
         message?: string;
       };
@@ -496,22 +648,25 @@ declare global {
       /**
        * Move to specific index of the tab.
        * @param {number} index - specified index of the tab willing to move
+       * @since 1.0.3
        */
       function moveTo(index: number): void;
 
       /**
        * Shows the tabbar.
+       * @since 1.0.3
        */
       function show(): void;
 
       /**
        * Hides the tabbar.
+       * @since 1.0.3
        */
       function hide(): void;
     }
 
     /**
-     * Namespace for vibration functions
+     * Namespace for vibration features
      * @since 1.2.0
      */
     namespace vibration {
@@ -524,37 +679,33 @@ declare global {
       }
       /**
        * Set whether haptics feedback is used or not.
+       * @since 1.2.0
        */
       function setHaptics(enable: boolean): void;
       /**
        * Set whether vibration is used or not.
+       * @since 1.2.0
        */
       function setVibration(enable: boolean): void;
       /**
        * Get whether haptics feedback is used or not from native.
+       * @since 1.2.0
        */
       function getHaptics(callback: (enable: boolean) => void): void;
       /**
        * Get whether vibration is used or not from native.
+       * @since 1.2.0
        */
       function getVibration(callback: (enable: boolean) => void): void;
       /**
-       * Get whether haptics feedback is used or not from user local storage.
-       * - Default : `true`
-       */
-      function isUsingHaptics(): boolean;
-      /**
-       * Get whether vibration is used or not from user local storage.
-       * - Default : `true`
-       */
-      function isUsingVibration(): boolean;
-      /**
        * Triggers haptics feedback.
        * - Default : `0`
+       * @since 1.2.0
        */
       function haptics(hapticsType?: HapticsType): void;
       /**
        * Triggers vibration.
+       * @since 1.2.0
        */
       function vibrate(): void;
     }
