@@ -1,7 +1,7 @@
 # Nachocode SDK 통합 가이드
 
 - **Nachocode SDK**를 웹 애플리케이션에서 활용하는 과정을 안내합니다. 이 가이드를 통해 **Nachocode SDK**의 기능을 웹 사이트에 손쉽게 추가할 수 있습니다.
-- 최신화 일자 : 2024-11-20
+- 최신화 일자 : 2024-11-26
 
 ## SDK 설정 방법
 
@@ -385,7 +385,9 @@ console.log(deviceOS); // ex. { os: 'Android', version: '34(14)' }
 
 ```javascript
 Nachocode.device.getNetworkStatus(status => {
-  const connectionInfo = `네트워크 상태: ${status.isConnected ? '연결됨' : '연결되지 않음'}\n연결 유형: ${status.connectionType}`;
+  const connectionInfo = `네트워크 상태: ${
+    status.isConnected ? '연결됨' : '연결되지 않음'
+  }\n연결 유형: ${status.connectionType}`;
   alert(connectionInfo);
 });
 ```
@@ -567,7 +569,7 @@ Nachocode에서 제공되는 기본 event 입니다.
 
 ### Methods (event)
 
-#### `on(eventName: string, callback: function): void`
+#### `on(eventName: EventType, callback: function): void`
 
 Nachocode에서 제공되는 기본 이벤트에 콜백 함수를 바인드합니다.
 
@@ -645,6 +647,15 @@ Nachocode.permission.checkPermission({ type: 'push', ask: true }, granted => {
 
 ### Methods (preference)
 
+#### `deleteData(key: string)`
+
+앱 내부 저장소에 저장된 데이터를 삭제합니다.
+
+```javascript
+// ex. 'sample'을 키로 앱 내부 저장소의 데이터를 삭제합니다.
+Nachocode.preference.deleteData('sample');
+```
+
 #### `getData(key: string, callback: (data: string) => any): void`
 
 앱 내부 저장소에 저장된 데이터를 불러옵니다. 콜백함수의 매개 변수로 값이 전달 됩니다.
@@ -669,7 +680,7 @@ Nachocode.preference.getData('sample', data => {
 Nachocode.preference.setData('sample', 'sample data');
 
 // ex. 'sample'을 키로 앱 내부 저장소의 데이터를 조회합니다.
-Nachocode.preference.setData('sample', data => {
+Nachocode.preference.getData('sample', data => {
   if (data) {
     alert(data); // sample data
   } else {
