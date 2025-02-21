@@ -1,14 +1,14 @@
 declare global {
   /**
-   * Nachocode JavaScript Client SDK Type Declaration v1.4.1
+   * Nachocode JavaScript Client SDK Type Declaration v1.4.2
    *
    * GitHub
    *   - https://github.com/FlipperCorporation/nachocode-client-sdk-js
    *
    * CDN
-   *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.4.1/Nachocode.d.ts
+   *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.4.2/Nachocode.d.ts
    *
-   * Last Updated Date: 2025-02-13
+   * Last Updated Date: 2025-02-19
    */
   namespace Nachocode {
     /**
@@ -544,7 +544,7 @@ declare global {
     /**
      * Namespace for event handling
      * @since 1.0.2
-     * @lastupdated 1.4.0
+     * @lastupdated 1.4.2
      */
     namespace event {
       /**
@@ -575,6 +575,18 @@ declare global {
          * @since 1.4.0
          */
         NETWORK_CHANGED = 'networkchanged',
+
+        /**
+         * Callback event triggered when the native keyboard is shown.
+         * @since 1.4.2
+         */
+        KEYBOARD_SHOWN = 'keyboardshown',
+
+        /**
+         * Callback event triggered when the native keyboard is hidden.
+         * @since 1.4.2
+         */
+        KEYBOARD_HIDDEN = 'keyboardhidden',
       }
       /**
        * Registers an event listener for the specified event name.
@@ -927,8 +939,14 @@ declare global {
     /**
      * Namespace for settings related functions
      * @since 1.4.0
+     * @lastupdated 1.4.2
      */
     namespace setting {
+      /**
+       * Function to open up OS application settings.
+       * @since 1.4.2
+       */
+      function openSetting(): void;
       /**
        * Set whether pull to refresh feature is enabled or not.
        * @since 1.3.0
