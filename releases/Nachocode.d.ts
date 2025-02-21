@@ -1,14 +1,14 @@
 declare global {
   /**
-   * Nachocode JavaScript Client SDK Type Declaration v1.4.0
+   * Nachocode JavaScript Client SDK Type Declaration v1.4.1
    *
    * GitHub
    *   - https://github.com/FlipperCorporation/nachocode-client-sdk-js
    *
    * CDN
-   *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.4.0/Nachocode.d.ts
+   *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.4.1/Nachocode.d.ts
    *
-   * Last Updated Date: 2025-02-06
+   * Last Updated Date: 2025-02-13
    */
   namespace Nachocode {
     /**
@@ -639,7 +639,7 @@ declare global {
         'user_relationships',
         'user_relationship_details',
         'user_friends_relationships',
-        'user_pages'
+        'user_pages',
       ];
       /**
        * Facebook permissions
@@ -850,6 +850,45 @@ declare global {
        * @since 1.0.0
        */
       function deletePushToken(userID: string): Promise<any>;
+
+      /**
+       * Function to reserve local push from native layer.
+       * @example
+       * Nachocode.push.sendLocalPush({
+       *  title: '할인 이벤트!',
+       *  content: '지금 바로 앱에서 확인하세요!',
+       *  link: 'https://nachocode.io/pricing',
+       *  usingAppIcon: true,
+       *  scheduleTime: new Date('2025-02-15T10:30:00Z'),
+       *  id: 1,
+       * });
+       * @since 1.4.1
+       */
+      function sendLocalPush(
+        payload: {
+          title: string;
+          content?: string;
+          link?: string;
+          usingAppIcon?: boolean;
+          scheduledTime?: Date;
+          id?: number;
+        },
+        callback: (result: {
+          status: 'success' | 'error';
+          statusCode?: string;
+          message?: string;
+          id?: number;
+        }) => any
+      ): void;
+
+      /**
+       * Function to cancel scheduled local push from native layer.
+       * @param {number} id - Push ID
+       * @example
+       * Nachocode.push.cancelLocalPush(id);
+       * @since 1.4.1
+       */
+      function cancelLocalPush(id: number): void;
     }
 
     /**
