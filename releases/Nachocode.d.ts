@@ -8,7 +8,7 @@ declare global {
    * CDN
    *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.4.2/Nachocode.d.ts
    *
-   * Last Updated Date: 2025-02-19
+   * Last Updated Date: 2025-02-21
    */
   namespace Nachocode {
     /**
@@ -834,9 +834,66 @@ declare global {
     /**
      * Namespace for push notification functions
      * @since 1.0.0
-     * @lastupdated 1.2.0
+     * @lastupdated 1.4.1
      */
     namespace push {
+      /**
+       * Options for local push notification
+       * @since 1.4.1
+       */
+      export declare type LocalPushPayload = {
+        /**
+         * Push notification title
+         */
+        title: string;
+        /**
+         * Push notification contents
+         */
+        content?: string;
+        /**
+         * Opens up the provided url when clicked
+         */
+        link?: string;
+        /**
+         * Uses the app icon as a push icon as default.
+         * If `false` provided, uses push icon instead.
+         */
+        usingAppIcon?: boolean;
+        /**
+         * Reserves time willing to send the local push notification.
+         * If not provided, instantly sends the push notification.
+         */
+        scheduledTime?: Date;
+        /**
+         * If provided, sets provided `id` to the local push notification
+         */
+        id?: number;
+      };
+
+      /**
+       * Local push result from native layer
+       * @since 1.4.1
+       */
+      export declare type LocalPushResult = {
+        /**
+         * Whether local push notification reservation was successful or not
+         */
+        status: 'success' | 'error';
+        /**
+         * If the reservation fails, returns error code.
+         */
+        statusCode?: string;
+        /**
+         * If the reservation fails, returns the reason why.
+         */
+        message?: string;
+        /**
+         * If the reservation was successful, returns local notification id.
+         * `id` is used for cancel.
+         */
+        id?: number;
+      };
+
       /**
        * Asks for the permission for push notifications.
        * @since 1.2.0
@@ -867,35 +924,23 @@ declare global {
        * Function to reserve local push from native layer.
        * @example
        * Nachocode.push.sendLocalPush({
-       *  title: '할인 이벤트!',
+       *  title: '깜짝 쿠폰 발송!',
        *  content: '지금 바로 앱에서 확인하세요!',
        *  link: 'https://nachocode.io/pricing',
-       *  usingAppIcon: true,
+       *  usingAppIcon: false,
        *  scheduleTime: new Date('2025-02-15T10:30:00Z'),
        *  id: 1,
        * });
        * @since 1.4.1
        */
       function sendLocalPush(
-        payload: {
-          title: string;
-          content?: string;
-          link?: string;
-          usingAppIcon?: boolean;
-          scheduledTime?: Date;
-          id?: number;
-        },
-        callback: (result: {
-          status: 'success' | 'error';
-          statusCode?: string;
-          message?: string;
-          id?: number;
-        }) => any
+        payload: LocalPushPayload,
+        callback: (result: LocalPushResult) => any
       ): void;
 
       /**
        * Function to cancel scheduled local push from native layer.
-       * @param {number} id - Push ID
+       * @param {number} id - scheduled local push notification id
        * @example
        * Nachocode.push.cancelLocalPush(id);
        * @since 1.4.1
