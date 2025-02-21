@@ -1,6 +1,6 @@
 # Nachocode SDK 통합 가이드
 
-> 🔔 **최신화 일자:** 2025-02-12
+> 🔔 **최신화 일자:** 2025-02-21
 
 **Nachocode JavaScript 클라이언트 SDK**는 **웹 개발자들이 네이티브 앱의 고유 기능을 손쉽게 활용할 수 있도록 돕는 SDK**입니다.
 
@@ -20,7 +20,7 @@
 
   ### 최신 버전 불러오기
 
-  - 현재 최신 버전 v1.4.0
+  - 현재 최신 버전 v1.4.2
 
   - 최신 버전의 SDK를 항상 유지하려면 아래 코드를 사용하세요
 
@@ -33,7 +33,7 @@
   - 특정 버전으로 고정하려면 다음과 같이 사용합니다
 
   ```html
-  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.4.0/client-sdk.min.js"></script>
+  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.4.2/client-sdk.min.js"></script>
   ```
 
 > 📢 **최신 버전을 사용하는 것이 권장되며, 특정 버전 고정은 호환성 유지가 필요한 경우에 사용하세요.**
@@ -145,6 +145,7 @@ Nachocode SDK는 각 기능별로 **네임스페이스(namespace)** 로 구분�
 | `env`            | SDK 초기화 상태, 실행 환경(웹/앱) 등을 확인할 수 있습니다.                       | [환경 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/env)               |
 | `event`          | 초기화, 포그라운드/백그라운드 전환, 네트워크 상태 변경 등의 이벤트를 처리합니다. | [이벤트 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/event)           |
 | `facebook`       | Facebook 소셜 로그인 기능을 제공합니다.                                          | [Facebook 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/facebook)      |
+| `iap`            | Google Play 및 Apple App Store 인앱 결제 기능을 제공합니다.                      | [인앱 결제 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/iap)          |
 | `permission`     | 카메라, 위치, 푸시 알림 등 디바이스 권한을 요청하고 상태를 확인할 수 있습니다.   | [권한 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/permission)        |
 | `preference`     | 애플리케이션 내부 저장소를 통해 데이터를 저장 및 관리합니다.                     | [내부 저장소 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/preference) |
 | `push`           | 푸시 알림 토큰을 관리하고 Nachocode 서버에 등록할 수 있습니다.                   | [푸시 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/push)              |
