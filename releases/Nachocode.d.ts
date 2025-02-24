@@ -8,7 +8,7 @@ declare global {
    * CDN
    *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.4.2/Nachocode.d.ts
    *
-   * Last Updated Date: 2025-02-21
+   * Last Updated Date: 2025-02-24
    */
   namespace Nachocode {
     /**
@@ -935,7 +935,7 @@ declare global {
        */
       function sendLocalPush(
         payload: LocalPushPayload,
-        callback: (result: LocalPushResult) => any
+        callback?: (result: LocalPushResult) => any
       ): void;
 
       /**
