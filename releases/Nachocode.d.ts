@@ -8,7 +8,7 @@ declare global {
    * CDN
    *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.4.2/Nachocode.d.ts
    *
-   * Last Updated Date: 2025-02-24
+   * Last Updated Date: 2025-03-04
    */
   namespace Nachocode {
     /**
@@ -651,7 +651,7 @@ declare global {
         'user_relationships',
         'user_relationship_details',
         'user_friends_relationships',
-        'user_pages',
+        'user_pages'
       ];
       /**
        * Facebook permissions
@@ -805,7 +805,7 @@ declare global {
     /**
      * Namespace for preference app storage functions
      * @since 1.2.0
-     * @lastupdated 1.3.0
+     * @lastupdated 1.4.2
      */
     namespace preference {
       /**
@@ -829,6 +829,28 @@ declare global {
        * @since 1.2.0
        */
       function setData(key: string, data: string): void;
+
+      /**
+       * Deletes the custom user id data from native layer's preference area
+       * with the specified key.
+       * @since 1.4.2
+       */
+      function deleteCustomUserId(): void;
+
+      /**
+       * Retrieves the custom user id data from native layer's preference area.
+       * Calls callback function with the data.
+       * @since 1.4.2
+       */
+      function getCustomUserId(
+        callback: (status: 'success' | 'error', data: string) => any
+      ): void;
+
+      /**
+       * Sets the custom user id data into native layer's preference area.
+       * @since 1.4.2
+       */
+      function setCustomUserId(data: string): void;
     }
 
     /**
