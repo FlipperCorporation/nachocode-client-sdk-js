@@ -831,26 +831,48 @@ declare global {
       function setData(key: string, data: string): void;
 
       /**
-       * Deletes the custom user id data from native layer's preference area
-       * with the specified key.
+       * Deletes the custom user id data from native layer's preference area.
        * @since 1.4.2
        */
       function deleteCustomUserId(): void;
 
       /**
        * Retrieves the custom user id data from native layer's preference area.
-       * Calls callback function with the data.
+       * Calls callback function with the result data.
+       * @param callback
+       * - if `customerUserId` is not set yet,
+       * parameter `customerUserId` has `undefined` type.
+       * @example
+       * Nachocode.preference.getCustomUserId((status, customUserId) => {
+       *   if (status == 'error') {
+       *     // Failed to get data from native app layer..
+       *     console.log('Getting customer user id failed..');
+       *     return;
+       *   }
+       *   if (!customUserId) {
+       *     // Customer user id not set..
+       *     const userId = 'your_user_id';
+       *     // Set customer user id..
+       *     Nachocode.preference.setCustomUserId(userId);
+       *   } else {
+       *     // `customUserId` exists..
+       *     console.log(customUserId);
+       *   }
+       * });
        * @since 1.4.2
        */
       function getCustomUserId(
-        callback: (status: 'success' | 'error', data: string) => any
+        callback: (
+          status: 'success' | 'error',
+          customUserId: string | undefined
+        ) => any
       ): void;
 
       /**
        * Sets the custom user id data into native layer's preference area.
        * @since 1.4.2
        */
-      function setCustomUserId(data: string): void;
+      function setCustomUserId(customUserId: string): void;
     }
 
     /**
