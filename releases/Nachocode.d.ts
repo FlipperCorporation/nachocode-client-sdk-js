@@ -1,14 +1,14 @@
 declare global {
   /**
-   * Nachocode JavaScript Client SDK Type Declaration v1.4.2
+   * Nachocode JavaScript Client SDK Type Declaration v1.5.0
    *
    * GitHub
    *   - https://github.com/FlipperCorporation/nachocode-client-sdk-js
    *
    * CDN
-   *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.4.2/Nachocode.d.ts
+   *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.5.0/Nachocode.d.ts
    *
-   * Last Updated Date: 2025-03-04
+   * Last Updated Date: 2025-04-18
    */
   namespace Nachocode {
     /**
@@ -51,9 +51,42 @@ declare global {
 
     /**
      * Initializes the Nachocode SDK with the provided API key and environment setting.
+     * @param apiKey - The API key for accessing Nachocode services.
+     * @example
+     * // checks Nachocode script loaded or not
+     * if (window.Nachocode) {
+     *   // registers event willing to be fired after SDK initialization
+     *   Nachocode.event.on('init', () => {
+     *     if (Nachocode.env.isApp()) {
+     *       // logic here only works in `App` environment..
+     *     }
+     *   });
+     *
+     *   // initializes Nachocode SDK
+     *   Nachocode.init('your_api_key_here', { logger: true });
+     * } else {
+     *   console.error('nachocode SDK not loaded..');
+     * }
      * @since 1.0.0
      */
     function init(apiKey: string, options?: InitializeOptions): void;
+
+    /**
+     * Asynchronously initializes the Nachocode SDK with the provided API key and options.
+     * @param apiKey - The API key for accessing Nachocode services.
+     * @example
+     * // asynchronously initializes Nachocode SDK
+     * await Nachocode.initAsync('your_api_key_here');
+     *
+     * if (Nachocode.env.isApp()) {
+     *  // logic here only works in `App` environment..
+     * }
+     * @since 1.4.2
+     */
+    function initAsync(
+      apiKey: string,
+      options?: InitializeOptions
+    ): Promise<void>;
 
     /**
      * Namespace for application specific functions
@@ -67,7 +100,7 @@ declare global {
        * @since 1.4.0
        */
       function checkFirstLaunch(
-        callback: (isFirstLaunch: boolean) => any
+        callback: (isFirstLaunch: boolean) => void
       ): void;
 
       /**
@@ -109,25 +142,28 @@ declare global {
      */
     namespace apple {
       /**
-       * Facebook result from native layer
+       * Apple result from native layer
        * @since 1.4.0
        */
       export declare type AppleResult = {
-        status: 'error' | 'success';
+        status: 'success' | 'error';
         errorCode?: string;
         message?: string;
       };
+
       /**
        * Reserved Apple permission types
        * @since 1.4.0
        */
       export declare type ApplePermissionTypes = ['email', 'fullName'];
+
       /**
        * Apple permissions
        * @since 1.4.0
        */
       export declare type ApplePermissions =
         (typeof ApplePermissionTypes)[string][];
+
       /**
        * Apple user data from native layer
        * @since 1.4.0
@@ -143,29 +179,34 @@ declare global {
         };
         [fields: string]: any;
       };
+
       /**
        * Apple native social login
        * @since 1.4.0
        */
       function login(
         permissions: ApplePermissions,
-        callback: (result: AppleResult, userData?: AppleUserData) => any
+        callback: (result: AppleResult, userData?: AppleUserData) => void
       ): void;
+
       /**
        * Check whether logged in with Apple native social login
        * @since 1.4.0
        */
       function isLoggedIn(
         identifier: string,
-        callback: (result: AppleResult, isLoggedIn: boolean) => any
+        callback: (result: AppleResult, isLoggedIn: boolean) => void
       ): void;
+
       /**
+       * @description
        * Function to get Apple user identifier from native layer.
+       *
        * Calls callback function with the user identifier.
        * @since 1.4.0
        */
       function getUserIdentifier(
-        callback: (result: AppleResult, userIdentifier?: string) => any
+        callback: (result: AppleResult, userIdentifier?: string) => void
       ): void;
     }
 
@@ -188,7 +229,7 @@ declare global {
        * @since 1.3.0
        */
       function canUseBiometrics(
-        callback: (available: boolean, error?: SDKError) => any
+        callback: (available: boolean, error?: SDKError) => void
       ): void;
 
       /**
@@ -197,7 +238,7 @@ declare global {
        * @since 1.3.0
        */
       function useBiometrics(
-        callback: (result: AuthenticationResult) => any
+        callback: (result: AuthenticationResult) => void
       ): void;
     }
 
@@ -317,7 +358,7 @@ declare global {
        * Function to get text from the native clipboard through native layer.
        * @since 1.4.0
        */
-      function getText(callback: (text: string) => any): void;
+      function getText(callback: (text: string) => void): void;
 
       /**
        * Function to set text to the native clipboard through native layer.
@@ -325,34 +366,52 @@ declare global {
        */
       function setText(
         text: string,
-        callback?: (status: 'success' | 'error', message: string) => any
+        callback?: (status: 'success' | 'error', message: string) => void
       ): void;
     }
 
     /**
      * Namespace for device specific functions
      * @since 1.0.0
-     * @lastupdated 1.3.0
+     * @lastupdated 1.4.2
      */
     namespace device {
       /**
-       * Enum for device types
+       * Device types
+       * @since 1.4.2
        */
-      export declare enum DeviceType {
-        ANDROID = 'Android',
-        IOS = 'iOS',
-        UNKNOWN = 'Unknown',
-      }
+      export declare const DEVICE_TYPES = {
+        ANDROID: 'Android',
+        IOS: 'iOS',
+        UNKNOWN: 'Unknown',
+      } as const;
 
       /**
-       * Enum for network connection types
+       * Type for device types
+       * @since 1.0.0
+       * @lastupdated 1.4.2
        */
-      export declare enum NetworkConnectionType {
-        WIFI = 'Wi-Fi',
-        CELLULAR = 'Cellular',
-        ETHERNET = 'Ethernet',
-        UNKNOWN = 'No Internet Connection',
-      }
+      export declare type DeviceType =
+        (typeof DEVICE_TYPES)[keyof typeof DEVICE_TYPES];
+
+      /**
+       * Network connection types
+       * @since 1.4.2
+       */
+      export declare const NETWORK_CONNECTION_TYPES = {
+        WIFI: 'Wi-Fi',
+        CELLULAR: 'Cellular',
+        ETHERNET: 'Ethernet',
+        UNKNOWN: 'No Internet Connection',
+      } as const;
+
+      /**
+       * Type for network connection types
+       * @since 1.3.0
+       * @lastupdated 1.4.2
+       */
+      export declare type NetworkConnectionType =
+        (typeof NETWORK_CONNECTION_TYPES)[keyof typeof NETWORK_CONNECTION_TYPES];
 
       /**
        * Detect the device type using the User-Agent string.
@@ -374,7 +433,10 @@ declare global {
        * @since 1.3.0
        */
       function getBatteryLevel(
-        callback: (status: { batteryLevel: number; isCharging: boolean }) => any
+        callback: (status: {
+          batteryLevel: number;
+          isCharging: boolean;
+        }) => void
       ): void;
 
       /**
@@ -387,7 +449,7 @@ declare global {
        * });
        * @since 1.4.0
        */
-      function getCurrentLanguage(callback: (language: string) => any): void;
+      function getCurrentLanguage(callback: (language: string) => void): void;
 
       /**
        * Retrieves the device model from the native layer.
@@ -411,7 +473,7 @@ declare global {
         callback: (status: {
           isConnected: boolean;
           connectionType: NetworkConnectionType;
-        }) => any
+        }) => void
       ): void;
 
       /**
@@ -439,13 +501,18 @@ declare global {
      * @lastupdated 1.2.0
      */
     namespace env {
+      const RUNNING_ENVIRONMENTS = {
+        WEB: 'web',
+        APP: 'app',
+      } as const;
+
       /**
-       * Enum for Nachocode application running environment
+       * Type for Nachocode application running environment
+       * @since 1.0.0
+       * @lastupdated 1.4.2
        */
-      export declare enum RunningEnvironment {
-        WEB = 'web',
-        APP = 'app',
-      }
+      export declare type RunningEnvironment =
+        (typeof RUNNING_ENVIRONMENTS)[keyof typeof RUNNING_ENVIRONMENTS];
 
       /**
        * Current environment of the application
@@ -549,58 +616,71 @@ declare global {
     namespace event {
       /**
        * Reserved event types
+       * @since 1.0.2
+       * @lastupdated 1.4.2
        */
-      export declare enum EventType {
+      export declare const EVENT_TYPES = {
         /**
          * Callback event triggered when the SDK is initialized.
          * @since 1.0.2
          */
-        INIT = 'init',
+        INIT: 'init',
 
         /**
          * Callback event automatically triggered when the app transitions to the background.
          * @since 1.2.0
          */
-        BACKGROUND = 'background',
+        BACKGROUND: 'background',
 
         /**
          * Callback event automatically triggered when the app transitions to the foreground.
          * @since 1.2.0
          */
-        FOREGROUND = 'foreground',
+        FOREGROUND: 'foreground',
 
         /**
          * Callback event triggered when the network status changes,
          * such as losing internet connection or switching from Wi-Fi to cellular.
          * @since 1.4.0
          */
-        NETWORK_CHANGED = 'networkchanged',
+        NETWORK_CHANGED: 'networkchanged',
 
         /**
          * Callback event triggered when the native keyboard is shown.
          * @since 1.4.2
          */
-        KEYBOARD_SHOWN = 'keyboardshown',
+        KEYBOARD_SHOWN: 'keyboardshown',
 
         /**
          * Callback event triggered when the native keyboard is hidden.
          * @since 1.4.2
          */
-        KEYBOARD_HIDDEN = 'keyboardhidden',
-      }
+        KEYBOARD_HIDDEN: 'keyboardhidden',
+      } as const;
+
+      /**
+       * Type for reserved event types
+       * @since 1.0.2
+       * @lastupdated 1.4.2
+       */
+      export declare type EventType =
+        (typeof EVENT_TYPES)[keyof typeof EVENT_TYPES];
+
       /**
        * Registers an event listener for the specified event name.
        * @param eventName - The event type to register.
        * @param callback - The callback function to execute when the event is triggered.
        * @since 1.0.2
        */
-      function on(eventName: EventType, callback: (params?: any) => any): void;
+      function on(eventName: EventType, callback: (params?: any) => void): void;
+
       /**
        * Unbinds registered event listener for the specified event name.
        * @param eventName - The event type to unregister.
        * @since 1.0.3
        */
       function off(eventName: EventType): void;
+
       /**
        * Registered events
        */
@@ -620,10 +700,11 @@ declare global {
        * @since 1.4.0
        */
       export declare type FacebookResult = {
-        status: 'error' | 'success';
+        status: 'success' | 'error';
         errorCode?: string;
         message?: string;
       };
+
       /**
        * Reserved facebook permission types
        * @see {@link https://developers.facebook.com/docs/permissions}
@@ -651,14 +732,16 @@ declare global {
         'user_relationships',
         'user_relationship_details',
         'user_friends_relationships',
-        'user_pages'
+        'user_pages',
       ];
+
       /**
        * Facebook permissions
        * @since 1.4.0
        */
       export declare type FacebookPermissions =
         (typeof FacebookPermissionTypes)[string][];
+
       /**
        * Facebook user data from native layer
        * @since 1.4.0
@@ -671,6 +754,7 @@ declare global {
         last_name?: string;
         [fields: string]: any;
       };
+
       /**
        * Facebook native social login
        * @since 1.4.0
@@ -682,8 +766,9 @@ declare global {
           accessToken?: string,
           userId?: string,
           userData?: FacebookUserData
-        ) => any
+        ) => void
       ): void;
+
       /**
        * Check whether logged in with Facebook native social login
        * @since 1.4.0
@@ -694,17 +779,21 @@ declare global {
           isLoggedIn: boolean,
           accessToken?: string,
           userId?: string
-        ) => any
+        ) => void
       ): void;
+
       /**
+       * @description
        * Requests to get Facebook user data from native layer.
+       *
        * Calls callback function with the data.
        * @since 1.4.0
        */
       function getUserData(
         permissions: FacebookPermissions,
-        callback: (result: FacebookResult, userData?: FacebookUserData) => any
+        callback: (result: FacebookResult, userData?: FacebookUserData) => void
       ): void;
+
       /**
        * Facebook native social logout
        * @since 1.4.0
@@ -713,7 +802,95 @@ declare global {
     }
 
     /**
+     * Namespace for Google native features
+     * @since 1.5.0
+     */
+    namespace google {
+      /**
+       * Google result from native layer
+       * @since 1.5.0
+       */
+      export declare type GoogleResult = {
+        /**
+         * Whether the Google native feature failed or not.
+         */
+        status: 'success' | 'error';
+        /**
+         * Google native feature result status code. 200 when successful.
+         */
+        statusCode: number;
+        /**
+         * Google native feature result message when failed.
+         */
+        message?: string;
+      };
+
+      /**
+       * Google user data from native layer
+       * @since 1.5.0
+       */
+      export declare type GoogleUserData = {
+        uid: string;
+        email?: string;
+        displayName?: string;
+        photoURL?: string;
+        phoneNumber?: string;
+        isEmailVerified: boolean;
+        providerId?: string;
+      };
+
+      /**
+       * @description
+       * Function to authenticate with native Google social login.
+       *
+       * Calls callback function with the user data value.
+       * @since 1.5.0
+       */
+      function login(
+        callback: (
+          result: GoogleResult,
+          idToken?: string,
+          userData?: GoogleUserData
+        ) => void
+      ): void;
+
+      /**
+       * @description
+       * Function to check whether authenticated with native Google social login.
+       *
+       * Calls callback function with the value whether the user is logged in or not.
+       * @since 1.5.0
+       */
+      function isLoggedIn(
+        callback: (
+          result: GoogleResult,
+          isLoggedIn: boolean,
+          idToken?: string
+        ) => void
+      ): void;
+
+      /**
+       * @description
+       * Function to get Google user data from native layer.
+       *
+       * Calls callback function with the user data.
+       * @since 1.5.0
+       */
+      function getUserData(
+        callback: (result: GoogleResult, userData?: GoogleUserData) => void
+      ): void;
+
+      /**
+       * @description
+       * Function to logout with Google native social features.
+       * @since 1.5.0
+       */
+      function logout(callback: (result: GoogleResult) => void): void;
+    }
+
+    /**
      * Namespace for in-app purchase functions
+     * @since 1.4.0
      */
     namespace iap {
       /**
@@ -735,14 +912,330 @@ declare global {
           };
         };
       };
+
       /**
        * Initiates a purchase transaction for the specified product.
+       * @since 1.4.0
        */
       function purchase(
         productKey: string,
         userId: string,
-        callback: (result: IapPurchaseResult) => any
+        callback: (result: IapPurchaseResult) => void
       ): Promise<any>;
+    }
+
+    /**
+     * Namespace for Kakao native features
+     * @since 1.5.0
+     */
+    namespace kakao {
+      /**
+       * Kakao result from native layer
+       * @since 1.5.0
+       */
+      export declare type KakaoResult = {
+        /**
+         * Whether the Kakao native feature failed or not.
+         */
+        status: 'success' | 'error';
+        /**
+         * Kakao native feature result status code. 200 when successful.
+         */
+        statusCode: number;
+        /**
+         * Kakao native feature result message when failed.
+         */
+        message?: string;
+      };
+
+      /**
+       * Kakao login data from native layer.
+       *
+       * Returned when a user logs in or checks logged in.
+       * @since 1.5.0
+       */
+      export declare type KakaoLoginData = {
+        accessToken?: string;
+        accessTokenExpiresAt?: Date;
+        refreshToken?: string;
+        refreshTokenExpiresAt?: Date;
+        idToken?: string;
+      };
+
+      /**
+       * Kakao user data from native layer.
+       * @since 1.5.0
+       */
+      export declare type KakaoUserData = {
+        id: number;
+        connectedAt?: Date;
+        /**
+         * Whether profile can be provided under user consent
+         */
+        profileNeedsAgreement?: boolean;
+        /**
+         * Whether profile can be provided under user consent
+         */
+        profileNeedsAgreement?: boolean;
+        /**
+         * Whether profileNickname can be provided under user consent
+         */
+        profileNicknameNeedsAgreement?: boolean;
+        /**
+         * Whether profileImage can be provided under user consent
+         */
+        profileImageNeedsAgreement?: boolean;
+        /**
+         * Profile information
+         */
+        profile?: string;
+        /**
+         * Whether name can be provided under user consent
+         */
+        nameNeedsAgreement?: boolean;
+        /**
+         * Name of Kakao Account
+         */
+        name?: string;
+        /**
+         * Whether email can be provided under user consent
+         */
+        emailNeedsAgreement?: boolean;
+        /**
+         * Whether email address is valid
+         */
+        isEmailValid?: boolean;
+        /**
+         * Whether email address is verified
+         */
+        isEmailVerified?: boolean;
+        /**
+         * Representative email of Kakao Account
+         */
+        email?: string;
+        /**
+         * Whether age can be provided under user consent
+         */
+        ageRangeNeedsAgreement?: boolean;
+        /**
+         * Age range
+         */
+        ageRange?: unknown;
+        /**
+         * Whether birthyear can be provided under user consent
+         */
+        birthyearNeedsAgreement?: boolean;
+        /**
+         * Birth year in `YYYY` format
+         */
+        birthyear?: string;
+        /**
+         * Whether birthday can be provided under user consent
+         */
+        birthdayNeedsAgreement?: boolean;
+        /**
+         * Birthday in `MMDD` format
+         */
+        birthday?: string;
+        /**
+         * Birthday type
+         */
+        birthdayType?: unknown;
+        /**
+         * Whether gender can be provided under user consent
+         */
+        genderNeedsAgreement?: boolean;
+        /**
+         * Gender
+         */
+        gender?: string;
+        /**
+         * Legal name
+         */
+        legalName?: string;
+        /**
+         * Whether legalGender can be provided under user consent
+         */
+        legalGenderNeedsAgreement?: boolean;
+        /**
+         * Legal gender
+         */
+        legalGender?: string;
+        /**
+         * Whether isKorean can be provided under user consent
+         */
+        legalBirthDateNeedsAgreement?: boolean;
+        /**
+         * Legal birth date in yyyyMMDD format
+         */
+        legalBirthDate?: string;
+        /**
+         * Whether phoneNumber can be provided under user consent
+         */
+        phoneNumberNeedsAgreement?: boolean;
+        /**
+         * Phone number of Kakao Account
+         */
+        phoneNumber?: string;
+        /**
+         * Whether consent to isKorean can be provided under user consent
+         */
+        isKoreanNeedsAgreement?: boolean;
+        /**
+         * Whether the user is Korean
+         */
+        isKorean?: boolean;
+      };
+
+      /**
+       * @description
+       * Function to authenticate with native Kakao social login.
+       *
+       * Calls callback function with the login data value.
+       * @since 1.5.0
+       */
+      function login(
+        callback: (result: KakaoResult, loginData?: KakaoLoginData) => void
+      ): void;
+
+      /**
+       * @description
+       * Function to check whether authenticated with native Kakao social login.
+       *
+       * Calls callback function with the value whether the user is logged in or not.
+       * @since 1.5.0
+       */
+      function isLoggedIn(
+        callback: (
+          result: KakaoResult,
+          isLoggedIn: boolean,
+          loginData?: KakaoLoginData
+        ) => void
+      ): void;
+
+      /**
+       * @description
+       * Function to get user data from native Kakao features.
+       *
+       * Calls callback function with the user data.
+       * @since 1.5.0
+       */
+      function getUserData(
+        callback: (result: KakaoResult, userData?: KakaoUserData) => void
+      ): void;
+
+      /**
+       * @description
+       * Function to logout Kakao. Unavailable to use `isLoggedIn` and `getUserData` any more.
+       *
+       * When the user attempts to log in, automatically authorized again
+       * with past account info from KakaoTalk.
+       * @since 1.5.0
+       */
+      function logout(callback: (result: KakaoResult) => void): void;
+
+      /**
+       * @description
+       * Function to completely disconnect Kakao between the account and the app.
+       *
+       * When the user attempts to log in, must be authorized again
+       * from scratch on KakaoTalk, after unlinked.
+       * @since 1.5.0
+       */
+      function unlink(callback: (result: KakaoResult) => void): void;
+
+      /**
+       * Native Kakao sharing types
+       * @since 1.4.2
+       */
+      export declare const KAKAO_SHARE_TYPES = {
+        CUSTOM: 'custom',
+        SCRAP: 'scrap',
+      } as const;
+
+      /**
+       * Type for native Kakao sharing types
+       * @since 1.2.0
+       * @lastupdated 1.4.2
+       */
+      export declare type KakaoShareType =
+        (typeof KAKAO_SHARE_TYPES)[keyof typeof KAKAO_SHARE_TYPES];
+
+      /**
+       * Native Kakao custom data to send
+       * @since 1.2.0
+       */
+      export declare type KakaoShareCustom = {
+        templateId: number;
+        templateArgs?: {
+          [key: string]: string;
+        };
+        serverCallbackArgs?: {
+          [key: string]: string;
+        };
+      };
+
+      /**
+       * Native Kakao scrap data to send
+       * @since 1.2.0
+       */
+      export declare type KakaoShareScrap = {
+        requestUrl: string;
+        templateId?: number;
+        templateArgs?: {
+          [key: string]: string;
+        };
+        serverCallbackArgs?: {
+          [key: string]: string;
+        };
+      };
+
+      /**
+       * Native Kakao share result status codes
+       * @since 1.5.0
+       */
+      export const KAKAO_SHARE_STATUS_CODES = {
+        ERROR_JSON_FAILED: 102,
+        ERROR_JSON_FAILED_TO_MODEL: 103,
+        ERROR_JSON_FAILED_TO_KAKAO_MODEL: 104,
+        ERROR_JSON_WRONG_SHARE_TYPE: 105,
+        ERROR_JSON_EMPTY_REQUEST_URL: 106,
+        ERROR_JSON_EMPTY_TEMPLATE_ID: 108,
+        ERROR_KAKAO_FAILED: 199,
+        SUCCESS_KAKAO: 200,
+        SUCCESS_SAFARI: 201,
+      } as const;
+
+      /**
+       * Kakao share result status code
+       * @since 1.2.0
+       * @lastupdated 1.4.2
+       */
+      export declare type KakaoShareStatusCode =
+        (typeof KAKAO_SHARE_STATUS_CODES)[keyof typeof KAKAO_SHARE_STATUS_CODES];
+
+      /**
+       * Kakao share result
+       * @since 1.2.0
+       */
+      export declare type KakaoShareResult = {
+        status: 'success' | 'error';
+        statusCode: KakaoShareStatusCode;
+        message?: string;
+      };
+
+      /**
+       * Send Kakao sharing
+       * @param type - Kakao sharing type
+       * @param data - Data to send kakao
+       * @param callback - Callback function called after sharing kakao
+       * @since 1.5.0
+       */
+      function share(
+        type: KakaoShareType,
+        data: KakaoShareCustom | KakaoShareScrap,
+        callback?: (result: KakaoShareResult) => void
+      ): void;
     }
 
     /**
@@ -775,21 +1268,54 @@ declare global {
     /**
      * Namespace for permission handling
      * @since 1.2.0
+     * @lastupdated 1.4.2
      */
     namespace permission {
       /**
        * Native device permission types
-       * @since 1.2.0
+       * @since 1.4.2
+       * @lastupdated 1.5.0
        */
-      export declare enum PermissionType {
-        CAMERA = 'camera',
-        LOCATION = 'location',
-        MICROPHONE = 'microphone',
-        PUSH = 'push',
-      }
+      export declare const PERMISSION_TYPES = {
+        /**
+         * Camera usage permission
+         * @since 1.4.2
+         */
+        CAMERA: 'camera',
+        /**
+         * Location access permission
+         * @since 1.4.2
+         */
+        LOCATION: 'location',
+        /**
+         * Microphone usage permission
+         * @since 1.4.2
+         */
+        MICROPHONE: 'microphone',
+        /**
+         * Photo usage permission
+         * @since 1.5.0
+         */
+        PHOTO: 'photo',
+        /**
+         * Push notification permission
+         * @since 1.4.2
+         */
+        PUSH: 'push',
+      } as const;
 
       /**
+       * Type for native device permission types
+       * @since 1.2.0
+       * @lastupdated 1.4.2
+       */
+      export declare type PermissionType =
+        (typeof PERMISSION_TYPES)[keyof typeof PERMISSION_TYPES];
+
+      /**
+       * @description
        * Checks whether the app user grants the specified permission or not.
+       *
        * Asks if optional parameter `ask` is set `true`.
        * @since 1.2.0
        */
@@ -798,7 +1324,7 @@ declare global {
           type: PermissionType;
           ask?: boolean;
         },
-        callback?: (granted: boolean) => any
+        callback?: (granted: boolean) => void
       ): void;
     }
 
@@ -809,6 +1335,7 @@ declare global {
      */
     namespace preference {
       /**
+       * @description
        * Deletes the data from native layer's preference area
        * with the specified key.
        * @since 1.3.0
@@ -816,14 +1343,17 @@ declare global {
       function deleteData(key: string): void;
 
       /**
+       * @description
        * Retrieves the data with the specified key
        * from native layer's preference area.
+       *
        * Calls callback function with selected data.
        * @since 1.2.0
        */
-      function getData(key: string, callback: (data: string) => any): void;
+      function getData(key: string, callback: (data: string) => void): void;
 
       /**
+       * @description
        * Sets the data with the specified key
        * into native layer's preference area.
        * @since 1.2.0
@@ -837,22 +1367,24 @@ declare global {
       function deleteCustomUserId(): void;
 
       /**
+       * @description
        * Retrieves the custom user id data from native layer's preference area.
+       *
        * Calls callback function with the result data.
        * @param callback
-       * - if `customerUserId` is not set yet,
-       * parameter `customerUserId` has `undefined` type.
+       * - if `customUserId` is not set yet,
+       * parameter `customUserId` has `undefined` type.
        * @example
        * Nachocode.preference.getCustomUserId((status, customUserId) => {
        *   if (status == 'error') {
-       *     // Failed to get data from native app layer..
-       *     console.log('Getting customer user id failed..');
+       *     // failed to get data from native app layer..
+       *     console.log('Getting custom user id failed..');
        *     return;
        *   }
        *   if (!customUserId) {
-       *     // Customer user id not set..
+       *     // custom user id not set..
        *     const userId = 'your_user_id';
-       *     // Set customer user id..
+       *     // set custom user id..
        *     Nachocode.preference.setCustomUserId(userId);
        *   } else {
        *     // `customUserId` exists..
@@ -865,7 +1397,7 @@ declare global {
         callback: (
           status: 'success' | 'error',
           customUserId: string | undefined
-        ) => any
+        ) => void
       ): void;
 
       /**
@@ -979,7 +1511,7 @@ declare global {
        */
       function sendLocalPush(
         payload: LocalPushPayload,
-        callback?: (result: LocalPushResult) => any
+        callback?: (result: LocalPushResult) => void
       ): void;
 
       /**
@@ -1021,7 +1553,7 @@ declare global {
           openDirect: boolean;
           openType?: 'internal' | 'external' | 'main';
         },
-        callback?: (data: string, error?: SDKError) => any
+        callback?: (data: string, error?: SDKError) => void
       ): void;
     }
 
@@ -1036,12 +1568,14 @@ declare global {
        * @since 1.4.2
        */
       function openSetting(): void;
+
       /**
        * Set whether pull to refresh feature is enabled or not.
        * @since 1.3.0
        * @lastupdated 1.4.0
        */
       function setPullToRefresh(enable: boolean): void;
+
       /**
        * Set whether zoom support feature is enabled or not.
        * @since 1.4.0
@@ -1063,6 +1597,7 @@ declare global {
 
       /**
        * Native Kakao sharing type
+       * @deprecated This has been moved to `kakao` namespace since `SDK version 1.5.0`
        */
       export declare enum KakaoShareType {
         CUSTOM = 'custom',
@@ -1071,6 +1606,7 @@ declare global {
 
       /**
        * Native Kakao custom data to send
+       * @deprecated This has been moved to `kakao` namespace since `SDK version 1.5.0`
        */
       export declare type KakaoShareCustom = {
         templateId: number;
@@ -1084,6 +1620,7 @@ declare global {
 
       /**
        * Native Kakao scrap data to send
+       * @deprecated This has been moved to `kakao` namespace since `SDK version 1.5.0`
        */
       export declare type KakaoShareScrap = {
         requestUrl: string;
@@ -1098,6 +1635,7 @@ declare global {
 
       /**
        * Kakao share result status code
+       * @deprecated This has been moved to `kakao` namespace since `SDK version 1.5.0`
        */
       export declare enum KakaoShareResultStatusCode {
         ERROR_JSON_FAILED = 102,
@@ -1113,9 +1651,10 @@ declare global {
 
       /**
        * Kakao share result
+       * @deprecated This has been moved to `kakao` namespace since `SDK version 1.5.0`
        */
       export declare type KakaoShareResult = {
-        status: 'error' | 'success';
+        status: 'success' | 'error';
         statusCode: KakaoShareStatusCode;
         message?: string;
       };
@@ -1126,6 +1665,7 @@ declare global {
        * @param data - Data to send kakao
        * @param callback - Callback function called after sharing kakao
        * @since 1.2.0
+       * @deprecated This method has been moved to `kakao` namespace since `SDK version 1.5.0`
        */
       function sendKakao(
         type: KakaoShareType,
@@ -1165,38 +1705,54 @@ declare global {
      */
     namespace vibration {
       /**
-       * Enum for haptics feedback type
+       * Haptics feedback types
+       * @since 1.4.2
        */
-      export declare enum HapticsType {
-        SUCCESS = 0,
-        ERROR = 1,
-      }
+      export declare const HAPTICS_TYPES = {
+        SUCCESS: 0,
+        ERROR: 1,
+      } as const;
+
+      /**
+       * Type for haptics feedback types
+       * @since 1.2.0
+       * @lastupdated 1.4.2
+       */
+      export declare type HapticsType =
+        (typeof HAPTICS_TYPES)[keyof typeof HAPTICS_TYPES];
+
       /**
        * Set whether haptics feedback is used or not.
        * @since 1.2.0
        */
       function setHaptics(enable: boolean): void;
+
       /**
        * Set whether vibration is used or not.
        * @since 1.2.0
        */
       function setVibration(enable: boolean): void;
+
       /**
        * Get whether haptics feedback is used or not from native.
        * @since 1.2.0
        */
       function getHaptics(callback: (enable: boolean) => void): void;
+
       /**
        * Get whether vibration is used or not from native.
        * @since 1.2.0
        */
       function getVibration(callback: (enable: boolean) => void): void;
+
       /**
+       * @description
        * Triggers haptics feedback.
        * - Default : `0`
        * @since 1.2.0
        */
       function haptics(hapticsType?: HapticsType): void;
+
       /**
        * Triggers vibration.
        * @since 1.2.0
