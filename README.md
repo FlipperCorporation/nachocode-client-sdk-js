@@ -1,6 +1,6 @@
 # Nachocode SDK 통합 가이드
 
-> 🔔 **최신화 일자:** 2025-04-18
+> 🔔 **최신화 일자:** 2025-06-12
 
 **Nachocode JavaScript 클라이언트 SDK**는 **웹 개발자들이 네이티브 앱의 고유 기능을 손쉽게 활용할 수 있도록 돕는 SDK**입니다.
 
@@ -20,7 +20,7 @@
 
   ### 최신 버전 불러오기
 
-  - 현재 최신 버전 v1.5.0
+  - 현재 최신 버전 v1.6.0
 
   - 최신 버전의 SDK를 항상 유지하려면 아래 코드를 사용하세요
 
@@ -33,7 +33,7 @@
   - 특정 버전으로 고정하려면 다음과 같이 사용합니다
 
   ```html
-  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.5.0/client-sdk.min.js"></script>
+  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.6.0/client-sdk.min.js"></script>
   ```
 
 > 📢 **최신 버전을 사용하는 것이 권장되며, 특정 버전 고정은 호환성 유지가 필요한 경우에 사용하세요.**
@@ -78,7 +78,7 @@
   if (window.Nachocode) {
     // InitializeOptions 없이도 초기화를 할 수 있습니다.
     // sandbox 와 logger는 false 값을 가지게 됩니다.
-    Nachocode.init('your_api_key_here');
+    Nachocode.initAsync('your_api_key_here');
   }
 </script>
 ```
@@ -88,15 +88,13 @@
 ```html
 <script>
   if (window.Nachocode) {
-    // SDK 초기화 후 동작할 이벤트를 등록 합니다.
-    Nachocode.event.on('init', () => {
+    // Nachocode SDK를 초기화 합니다.
+    Nachocode.initAsync('your_api_key_here', { logger: true }).then(() => {
+      // SDK 초기화 후 동작할 로직을 작성합니다.
       if (Nachocode.env.isApp()) {
         // 앱 환경에서만 동작 할 로직을 작성합니다.
       }
     });
-
-    // Nachocode SDK를 초기화 합니다.
-    Nachocode.init('your_api_key_here', { logger: true });
   } else {
     console.error('Nachocode SDK가 로드되지 않았습니다.');
   }
@@ -154,6 +152,7 @@ Nachocode SDK는 각 기능별로 **네임스페이스(namespace)** 로 구분�
 | `scanner`        | QR 코드 스캔 및 기타 스캔 기능을 제공합니다.                                     | [스캐너 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/scanner)         |
 | `setting`        | Pull to Refresh와 같은 설정 기능을 제공합니다.                                   | [설정 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/setting)           |
 | `share`          | 네이티브 공유 UI를 통해 URL을 공유할 수 있습니다.                                | [공유 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/share)             |
+| `store`          | 앱스토어 및 플레이스토어 상호작용 기능을 제공합니다.                             | [공유 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/store)             |
 | `tabbar`         | 앱 내부 탭바의 표시 여부 및 이동을 제어할 수 있습니다.                           | [탭 바 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/tabbar)           |
 | `vibration`      | 디바이스 진동 및 햅틱 피드백을 제어합니다.                                       | [진동 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/vibration)         |
 
