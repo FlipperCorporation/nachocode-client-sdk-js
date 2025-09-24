@@ -1,10 +1,10 @@
-# Nachocode SDK 통합 가이드
+# nachocode SDK 통합 가이드
 
-> 🔔 **최신화 일자:** 2025-07-28
+> 🔔 **최신화 일자:** 2025-09-24
 
-**Nachocode JavaScript 클라이언트 SDK**는 **웹 개발자들이 네이티브 앱의 고유 기능을 손쉽게 활용할 수 있도록 돕는 SDK**입니다.
+**nachocode JavaScript 클라이언트 SDK**는 **웹 개발자들이 네이티브 앱의 고유 기능을 손쉽게 활용할 수 있도록 돕는 SDK**입니다.
 
-**Nachocode SDK**를 활용하면 다양한 네이티브 기능에 접근할 수 있으며, 웹 애플리케이션에서도 손쉽게 모바일 디바이스의 고유 정보를 활용할 수 있습니다.
+**nachocode SDK**를 활용하면 다양한 네이티브 기능에 접근할 수 있으며, 웹 애플리케이션에서도 손쉽게 모바일 디바이스의 고유 정보를 활용할 수 있습니다.
 
 이 문서는 **SDK의 설치, 초기화, 주요 기능 및 사용 방법** 등을 안내합니다.
 
@@ -12,15 +12,15 @@
 
 ## SDK 설정 방법
 
-- **Nachocode SDK**를 웹 페이지에 통합하는 과정은 매우 간단합니다. 아래 단계를 따라 진행하세요.
+- **nachocode SDK**를 웹 페이지에 통합하는 과정은 매우 간단합니다. 아래 단계를 따라 진행하세요.
 
-- **Nachocode SDK**는 **CDN을 통해 간편하게 설치**할 수 있습니다.
+- **nachocode SDK**는 **CDN을 통해 간편하게 설치**할 수 있습니다.
 
-- 웹 페이지의 `<body>` 태그 안에 다음과 같은 스크립트 태그를 추가합니다. 이 스크립트는 **Nachocode SDK**를 웹 페이지에 로드합니다.
+- 웹 페이지의 `<body>` 태그 안에 다음과 같은 스크립트 태그를 추가합니다. 이 스크립트는 **nachocode SDK**를 웹 페이지에 로드합니다.
 
   ### 최신 버전 불러오기
 
-  - 현재 최신 버전 v1.6.3
+  - 현재 최신 버전 v1.7.0
 
   - 최신 버전의 SDK를 항상 유지하려면 아래 코드를 사용하세요
 
@@ -33,7 +33,7 @@
   - 특정 버전으로 고정하려면 다음과 같이 사용합니다
 
   ```html
-  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.6.3/client-sdk.min.js"></script>
+  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.7.0/client-sdk.min.js"></script>
   ```
 
 > 📢 **최신 버전을 사용하는 것이 권장되며, 특정 버전 고정은 호환성 유지가 필요한 경우에 사용하세요.**
@@ -44,20 +44,20 @@
 
 #### 개요
 
-- 웹 페이지 로딩이 완료되면, **Nachocode SDK를 초기화**해야 합니다.
+- 웹 페이지 로딩이 완료되면, **nachocode SDK를 초기화**해야 합니다.
 - 초기화는 **API 키**를 사용하며, 필요에 따라 디버깅 로깅 기능을 활성화할 수 있습니다.
 
-#### `init` 메서드 정의
+#### `initAsync` 메서드 정의
 
-##### `init(apiKey: string, options?: InitializeOptions): void`
+##### `initAsync(apiKey: string, options?: InitializeOptions): Promise<void>`
 
-- **Nachocode SDK**를 초기화합니다. 애플리케이션이 시작할 때 호출해야 합니다.
+- **nachocode SDK**를 초기화합니다. 애플리케이션이 시작할 때 호출해야 합니다.
 
 ##### 매개변수
 
 | **옵션**  | **타입**            | **설명**                                                                                                          |
 | --------- | ------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `apiKey`  | `string`            | Nachocode SDK 서비스 접근을 위한 **API 키**. [Nachocode 대시보드](https://nachocode.io)에서 발급받을 수 있습니다. |
+| `apiKey`  | `string`            | nachocode SDK 서비스 접근을 위한 **API 키**. [Nachocode 대시보드](https://nachocode.io)에서 발급받을 수 있습니다. |
 | `options` | `InitializeOptions` | (_optional_) 선택적 초기화 옵션입니다 (`sandbox`, `logger` 등).                                                   |
 
 ##### `InitializeOptions` 설명
@@ -88,7 +88,7 @@
 ```html
 <script>
   if (window.Nachocode) {
-    // Nachocode SDK를 초기화 합니다.
+    // nachocode SDK를 초기화 합니다.
     Nachocode.initAsync('your_api_key_here', { logger: true }).then(() => {
       // SDK 초기화 후 동작할 로직을 작성합니다.
       if (Nachocode.env.isApp()) {
@@ -96,7 +96,7 @@
       }
     });
   } else {
-    console.error('Nachocode SDK가 로드되지 않았습니다.');
+    console.error('nachocode SDK가 로드되지 않았습니다.');
   }
 </script>
 ```
@@ -105,7 +105,7 @@
 
 ### 3. SDK 기능 사용
 
-- Nachocode SDK가 초기화가 완료되면, `Nachocode` 네임스페이스 아래에 정의된 다양한 네이티브 기능을 사용할 수 있습니다.
+- nachocode SDK가 초기화가 완료되면, `Nachocode` 네임스페이스 아래에 정의된 다양한 네이티브 기능을 사용할 수 있습니다.
 
 - 아래 예시는 SDK의 일부 기능을 사용하는 방법을 보여줍니다.
 
@@ -128,13 +128,14 @@
 
 ## 네임스페이스 소개
 
-Nachocode SDK는 각 기능별로 **네임스페이스(namespace)** 로 구분되어 있습니다.  
+nachocode SDK는 각 기능별로 **네임스페이스(namespace)** 로 구분되어 있습니다.  
 아래는 주요 네임스페이스의 목록과 설명입니다. 각 네임스페이스에 대한 상세한 문서는 **문서 링크**에서 확인하세요.
 
 | **네임스페이스** | **설명**                                                                         | **문서 링크**                                                                             |
 | ---------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `app`            | 앱 이름, 버전, 패키지 이름 등의 정보를 제공합니다.                               | [앱 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/app)                 |
 | `apple`          | Apple 계정을 통한 소셜 로그인 기능 등을 제공합니다.                              | [Apple 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/apple)            |
+| `appsflyer`      | AppsFlyer 마케팅 애트리뷰션 및 사용자 트래킹 기능 등을 제공합니다.               | [AppsFlyer 네임스페이스](https://developer.nachocode.io/docs/sdk/integrations/appsflyer)  |
 | `authentication` | 생체 인증(Fingerprint/Face ID) 등의 기능을 제공합니다.                           | [인증 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/authentication)    |
 | `backkey`        | Android 디바이스의 네이티브 백 키 이벤트를 제어할 수 있습니다.                   | [백 키 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/backkey)          |
 | `browser`        | 외부 또는 내부 브라우저로 URL을 열 수 있습니다.                                  | [브라우저 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/browser)       |
@@ -163,8 +164,8 @@ Nachocode SDK는 각 기능별로 **네임스페이스(namespace)** 로 구분�
 
 ## 추가 정보 및 지원
 
-- **Nachocode SDK**를 사용하여 더 많은 기능을 구현하고 싶다면, [공식 개발자 문서](https://developer.nachocode.io/docs/sdk/intro)를 참조하세요.
+- **nachocode SDK**를 사용하여 더 많은 기능을 구현하고 싶다면, [공식 개발자 문서](https://developer.nachocode.io/docs/sdk/intro)를 참조하세요.
 
-- Nachocode 팀은 여러분의 성공적인 프로젝트 구현을 위해 항상 도움을 준비하고 있습니다. **기술적인 질문이나 피드백**이 있다면 언제든지 [support@nachocode.io](mailto:support@nachocode.io)로 문의를 보내주세요.
+- nachocode 팀은 여러분의 성공적인 프로젝트 구현을 위해 항상 도움을 준비하고 있습니다. **기술적인 질문이나 피드백**이 있다면 언제든지 지원팀 메일 [support@nachocode.io](mailto:support@nachocode.io)로 문의를 보내주세요.
 
 ---
