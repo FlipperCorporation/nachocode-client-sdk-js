@@ -9,7 +9,7 @@ declare global {
    * CDN
    *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.7.0/Nachocode.d.ts
    *
-   * Last Updated Date: 2025-09-23
+   * Last Updated Date: 2025-09-25
    */
   namespace Nachocode {
     /**
@@ -283,12 +283,14 @@ declare global {
         statusCode: 200;
         message: string;
       };
+
       export declare type AppsflyerErrorResult = {
         status: 'error';
         statusCode: number;
         errorCode: string;
         message: string;
       };
+
       export declare type AppsflyerResult =
         | AppsflyerSuccessResult
         | AppsflyerErrorResult;
@@ -296,6 +298,7 @@ declare global {
       interface GetCustomUserIdSuccessResult extends AppsflyerSuccessResult {
         userId: string;
       }
+
       export declare type GetCustomUserIdResult =
         | GetCustomUserIdSuccessResult
         | AppsflyerErrorResult;
