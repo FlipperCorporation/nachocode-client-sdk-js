@@ -307,7 +307,7 @@ declare global {
        * @example
        * {
        *   timestamp: 1758550124487,
-       *   event_type: "conversion_data",
+       *   data_type: "conversion_data",
        *   install_time: "2025-09-22 09:30:36.455",
        *   af_message: "organic install",
        *   af_status: "Organic",
@@ -322,7 +322,7 @@ declare global {
         /**
          * How the attribution was received.
          */
-        event_type: 'conversion_data';
+        data_type: 'conversion_data';
         install_time: string;
         af_message: string;
         /**
@@ -341,7 +341,7 @@ declare global {
        * @example
        * {
        *   timestamp: 1758610751590,
-       *   event_type: "deeplink_data",
+       *   data_type: "deeplink_data",
        *   link_type: "app_link",
        *   scheme: "https",
        *   host: "nachocode.link",
@@ -358,7 +358,7 @@ declare global {
         /**
          * How the attribution was received.
          */
-        event_type: 'deeplink_data';
+        data_type: 'deeplink_data';
         link_type: 'app_link' | 'universal_link' | 'uri_scheme';
         scheme: string;
         host: string;
