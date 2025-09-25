@@ -1,7 +1,7 @@
 {
   "name": "nachocode-client-sdk-js",
-  "version": "1.5.0",
-  "description": "Nachocode SDK Client JS Library",
+  "version": "1.7.0",
+  "description": "nachocode SDK Client JS Library",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,16 +19,25 @@
     "email": "flipper@nachocode.io"
   },
   "keywords": [
-    "Nachocode",
+    "nachocode",
     "Client",
     "SDK",
-    "JavaScript"
+    "JavaScript",
+    "App Builder",
+    "Low-Code",
+    "Cross-Platform",
+    "Hybrid App",
+    "나쵸코드",
+    "앱 빌더",
+    "로우 코드",
+    "크로스 플랫폼",
+    "하이브리드 앱"
   ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/FlipperCorporation/nachocode-client-sdk-js/issues"
   },
-  "homepage": "https://github.com/FlipperCorporation/nachocode-client-sdk-js#readme",
+  "homepage": "https://developer.nachocode.io",
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",
     "@types/node": "^20.11.27",
