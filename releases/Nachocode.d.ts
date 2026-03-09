@@ -9,7 +9,7 @@ declare global {
    * CDN
    *   - https://cdn.nachocode.io/nachocode/client-sdk/@1.10.0/Nachocode.d.ts
    *
-   * Last Updated Date: 2026-03-05
+   * Last Updated Date: 2026-03-06
    */
   namespace Nachocode {
     /**
@@ -2408,7 +2408,7 @@ declare global {
        * @param allowed - Whether the user agrees to receive marketing push notifications.
        * @since 1.10.0
        */
-      function setMarketingAllowed(allowed: boolean): Promise<void>;
+      function setMarketingAllowed(allowed: boolean): void;
 
       /**
        * Function to get whether the device user agrees to receive an advertising push notification.
@@ -2426,7 +2426,7 @@ declare global {
        * @param allowed - Whether the user agrees to receive night push notifications.
        * @since 1.10.0
        */
-      function setNightAllowed(allowed: boolean): Promise<void>;
+      function setNightAllowed(allowed: boolean): void;
 
       /**
        * Function to get whether the device user agrees to receive a night push notification.
