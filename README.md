@@ -1,6 +1,6 @@
 # nachocode SDK 통합 가이드
 
-> 🔔 **최신화 일자:** 2026-03-27
+> 🔔 **최신화 일자:** 2026-04-29
 
 **nachocode JavaScript 클라이언트 SDK**는 **웹 개발자들이 네이티브 앱의 고유 기능을 손쉽게 활용할 수 있도록 돕는 SDK**입니다.
 
@@ -20,7 +20,7 @@
 
   ### 최신 버전 불러오기
 
-  - 현재 최신 버전 v1.10.2
+  - 현재 최신 버전 v1.10.3
 
   - 최신 버전의 SDK를 항상 유지하려면 아래 코드를 사용하세요
 
@@ -33,7 +33,7 @@
   - 특정 버전으로 고정하려면 다음과 같이 사용합니다
 
   ```html
-  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.10.2/client-sdk.min.js"></script>
+  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.10.3/client-sdk.min.js"></script>
   ```
 
 > 📢 **최신 버전을 사용하는 것이 권장되며, 특정 버전 고정은 호환성 유지가 필요한 경우에 사용하세요.**
