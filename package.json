@@ -1,6 +1,6 @@
 {
   "name": "nachocode-client-sdk-js",
-  "version": "1.10.3",
+  "version": "1.10.4",
   "description": "nachocode SDK Client JS Library",
   "main": "src/index.js",
   "scripts": {
