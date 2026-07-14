@@ -1,6 +1,6 @@
 # nachocode SDK 통합 가이드
 
-> 🔔 **최신화 일자:** 2026-06-25
+> 🔔 **최신화 일자:** 2026-07-14
 
 **nachocode JavaScript 클라이언트 SDK**는 **웹 개발자들이 네이티브 앱의 고유 기능을 손쉽게 활용할 수 있도록 돕는 SDK**입니다.
 
@@ -20,7 +20,7 @@
 
   ### 최신 버전 불러오기
 
-  - 현재 최신 버전 v1.10.5
+  - 현재 최신 버전 v1.11.0
 
   - 최신 버전의 SDK를 항상 유지하려면 아래 코드를 사용하세요
 
@@ -33,7 +33,7 @@
   - 특정 버전으로 고정하려면 다음과 같이 사용합니다
 
   ```html
-  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.10.5/client-sdk.min.js"></script>
+  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.11.0/client-sdk.min.js"></script>
   ```
 
 > 📢 **최신 버전을 사용하는 것이 권장되며, 특정 버전 고정은 호환성 유지가 필요한 경우에 사용하세요.**
@@ -62,9 +62,10 @@
 
 ##### `InitializeOptions` 설명
 
-| **옵션** | **타입**  | **설명**                                                       |
-| -------- | --------- | -------------------------------------------------------------- |
-| `logger` | `boolean` | 개발 시 **디버깅 로깅**을 활성화합니다 (`true` = 로그 활성화). |
+| **옵션**  | **타입**  | **설명**                                                                      |
+| --------- | --------- | ----------------------------------------------------------------------------- |
+| `sandbox` | `boolean` | **테스트 환경**을 위한 샌드박스 모드를 활성화합니다 (`true` = 샌드박스 모드). |
+| `logger`  | `boolean` | 개발 시 **디버깅 로깅**을 활성화합니다 (`true` = 로그 활성화).                |
 
 #### 사용 예제
 
@@ -169,6 +170,7 @@ nachocode SDK는 연동된 외부 솔루션의 기능들도 **네임스페이스
 | `apple`          | Apple 계정을 통한 소셜 로그인 기능 등을 제공합니다.                | [Apple 네임스페이스](https://developer.nachocode.io/docs/sdk/integrations/apple/reference)         |
 | `appsflyer`      | AppsFlyer 마케팅 애트리뷰션 및 사용자 트래킹 기능 등을 제공합니다. | [AppsFlyer 네임스페이스](https://developer.nachocode.io/docs/sdk/integrations/appsflyer/reference) |
 | `facebook`       | Facebook 소셜 로그인 기능을 제공합니다.                            | [Facebook 네임스페이스](https://developer.nachocode.io/docs/sdk/integrations/facebook/reference)   |
+| `firebase`       | Firebase Analytics 연동 기능을 제공합니다.                         | [Firebase 네임스페이스](https://developer.nachocode.io/docs/sdk/integrations/firebase/reference)   |
 | `google`         | Google 소셜 로그인 기능을 제공합니다.                              | [Google 네임스페이스](https://developer.nachocode.io/docs/sdk/integrations/google/reference)       |
 | `kakao`          | Kakao 소셜 로그인 기능을 제공합니다.                               | [Kakao 네임스페이스](https://developer.nachocode.io/docs/sdk/integrations/kakao/reference)         |
 | `naver`          | Naver 소셜 로그인 기능을 제공합니다.                               | [Naver 네임스페이스](https://developer.nachocode.io/docs/sdk/integrations/naver/reference)         |
