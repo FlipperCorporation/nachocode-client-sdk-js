@@ -1,6 +1,6 @@
 # nachocode SDK 통합 가이드
 
-> 🔔 **최신화 일자:** 2026-08-06
+> 🔔 **최신화 일자:** 2026-08-13
 
 **nachocode JavaScript 클라이언트 SDK**는 **웹 개발자들이 네이티브 앱의 고유 기능을 손쉽게 활용할 수 있도록 돕는 SDK**입니다.
 
@@ -20,7 +20,7 @@
 
   ### 최신 버전 불러오기
 
-  - 현재 최신 버전 v1.11.2
+  - 현재 최신 버전 v1.11.3
 
   - 최신 버전의 SDK를 항상 유지하려면 아래 코드를 사용하세요
 
@@ -33,7 +33,7 @@
   - 특정 버전으로 고정하려면 다음과 같이 사용합니다
 
   ```html
-  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.11.2/client-sdk.min.js"></script>
+  <script src="https://cdn.nachocode.io/nachocode/client-sdk/@1.11.3/client-sdk.min.js"></script>
   ```
 
 > 📢 **최신 버전을 사용하는 것이 권장되며, 특정 버전 고정은 호환성 유지가 필요한 경우에 사용하세요.**
@@ -143,6 +143,7 @@ nachocode SDK는 각 기능별로 **네임스페이스(namespace)** 로 구분�
 | `event`          | 초기화, 포그라운드/백그라운드 전환, 네트워크 상태 변경 등의 이벤트를 처리합니다. | [이벤트 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/event)           |
 | `iap`            | Google Play 및 Apple App Store 인앱 결제 기능을 제공합니다.                      | [인앱 결제 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/iap)          |
 | `loading`        | 네이티브 로딩 인디케이터를 제어합니다.                                           | [로딩 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/loading)           |
+| `locale`         | 앱의 다국어 처리를 제어합니다.                                                   | [로딩 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/loading)           |
 | `location`       | 현재 디바이스 위치의 경도, 위도를 확인할 수 있습니다.                            | [Location 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/location)      |
 | `navigation`     | 네비게이션 스택 제어 및 스와이프 제스처 설정 등을 제공합니다.                    | [네비게이션 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/navigation)  |
 | `permission`     | 카메라, 위치, 푸시 알림 등 디바이스 권한을 요청하고 상태를 확인할 수 있습니다.   | [권한 네임스페이스](https://developer.nachocode.io/docs/sdk/namespaces/permission)        |
